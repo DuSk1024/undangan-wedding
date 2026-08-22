@@ -1,0 +1,140 @@
+:root {
+    --primary-gold: #b8860b;
+    --dark-gold: #8b6508;
+    --dark-accent: #3a2e2b;
+    --bg-krem: #f3f0e9;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-accent);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--bg-krem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.font-serif {
+    font-family: 'Great Vibes', cursive;
+}
+
+.text-gold {
+    color: var(--primary-gold) !important;
+}
+
+/* Base Wrapper Full Screen */
+.cover-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-krem);
+}
+
+/* Background Krem Polos */
+.cover-bg-plain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-krem);
+    background-image: url('../images/bg-plain.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 0;
+}
+
+/* STAGE PENGUNCI LEBAR */
+.frame-stage {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: 500px;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* BASE STYLE UNTUK SEMUA ELEMENT ORNAMEN */
+.frame-part {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    mix-blend-mode: lighten; /* Menghilangkan latar hitam pekat */
+    background: transparent !important;
+}
+
+/* POSISI 4 SUDUT */
+#topLeft { top: 0; left: 0; object-position: top left; z-index: 10; }
+#topRight { top: 0; right: 0; object-position: top right; z-index: 10; }
+#bottomRight { bottom: 0; right: 0; object-position: bottom right; z-index: 10; }
+#bottomLeft { bottom: 0; left: 0; object-position: bottom left; z-index: 10; }
+
+/* POSISI 2 ELEMEN TENGAH */
+#topCenter { 
+    top: 0; 
+    left: 0; 
+    object-position: top center; 
+    z-index: 12; 
+    transform-origin: top center; 
+}
+
+#bottomCenter { 
+    bottom: 0; 
+    left: 0; 
+    object-position: bottom center; 
+    z-index: 12; 
+    transform-origin: bottom center; 
+}
+
+/* KONTEN TEKS TENGAH */
+.container {
+    max-width: 400px !important;
+}
+
+.guest-box {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(184, 134, 11, 0.35) !important;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+}
+
+.btn-gold {
+    background-color: var(--primary-gold);
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 18px rgba(184, 134, 11, 0.35);
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    background-color: var(--dark-gold);
+    color: #fff;
+    transform: translateY(-3px) scale(1.02);
+}
+
+#topCenter { 
+    top: 0; 
+    left: 0; 
+    object-position: top center; 
+    z-index: 12; 
+    transform-origin: top center; 
+    
+    /* Digeser sedikit ke kanan (2px - 3px) */
+    transform: translateX(4.5px); 
+}
