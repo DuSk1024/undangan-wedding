@@ -206,7 +206,7 @@ html, body {
     }
 
     .middle-content {
-        margin-bottom: 5px; /* Menyesuaikan posisi turun agar tidak terlalu tinggi di HP */
+        margin-bottom: 25px; /* Menyesuaikan posisi turun agar tidak terlalu tinggi di HP */
     }
 
     .couple-name {
