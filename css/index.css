@@ -1,140 +1,219 @@
-:root {
-    --primary-gold: #b8860b;
-    --dark-gold: #8b6508;
-    --dark-accent: #3a2e2b;
-    --bg-krem: #f3f0e9;
+/* DEKLARASI FONT KUSTOM LOKAL */
+@font-face {
+    font-family: 'Amoresa';
+    src: url('../fonts/Amoresa Regular.otf') format('opentype'),
+         url('../fonts/Amoresa Aged.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    color: var(--dark-accent);
+@font-face {
+    font-family: 'The Seasons';
+    src: url('../fonts/Fontspring-DEMO-theseasons-reg.otf') format('opentype'),
+         url('../fonts/Fontspring-DEMO-theseasons-bd.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --olive-green: #3d4a3e;    /* Hijau olive gelap */
+    --canva-brown: #a88d7d;     /* Cokelat tombol Canva */
+    --canva-brown-hover: #967b6b;
+    --text-dark: #1a1a1a;
+    --text-muted: #2b2b2b;
+    --bg-outer: #dfdbd5;
+}
+
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
-    background-color: var(--bg-krem);
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-outer);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
 }
 
-.font-serif {
-    font-family: 'Great Vibes', cursive;
-}
-
-.text-gold {
-    color: var(--primary-gold) !important;
-}
-
-/* Base Wrapper Full Screen */
 .cover-wrapper {
     position: relative;
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg-krem);
+    padding: 15px;
 }
 
-/* Background Krem Polos */
-.cover-bg-plain {
+/* DIMENSI CARD CANVAS (FLEXIBLE BISA RESPONSIF) */
+.card-canvas {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+    max-height: 750px;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: #ffffff !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* FOTO BACKGROUND (50% TRANSPARANSI - TAJAM TANPA BLUR) */
+.photo-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 115%;
+    object-fit: cover;
+    object-position: center top;
+
+    opacity: 0.586 !important;
+    filter: none !important;
+
+    transform: translateY(-70px) scale(1.05);
+    z-index: 0;
+}
+
+/* LAPISAN OVERLAY PUTIH SUPER TIPIS HALUS */
+.photo-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--bg-krem);
-    background-image: url('../images/bg-plain.png');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: 0;
+
+    background: rgba(255, 255, 255, 0.04) !important;
+
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* STAGE PENGUNCI LEBAR */
-.frame-stage {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    max-width: 500px;
-    height: 100vh;
+/* CONTAINER LAYER KONTEN (PANGGUNG FLEXBOX AGAR POSITIONING OTOMATIS) */
+.content-container {
+    position: relative;
     z-index: 10;
-    pointer-events: none;
-}
-
-/* BASE STYLE UNTUK SEMUA ELEMENT ORNAMEN */
-.frame-part {
-    position: absolute;
-    width: 100%;
+    padding: 40px 20px 30px 20px;
     height: 100%;
-    object-fit: contain;
-    pointer-events: none;
-    mix-blend-mode: lighten; /* Menghilangkan latar hitam pekat */
-    background: transparent !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* POSISI 4 SUDUT */
-#topLeft { top: 0; left: 0; object-position: top left; z-index: 10; }
-#topRight { top: 0; right: 0; object-position: top right; z-index: 10; }
-#bottomRight { bottom: 0; right: 0; object-position: bottom right; z-index: 10; }
-#bottomLeft { bottom: 0; left: 0; object-position: bottom left; z-index: 10; }
-
-/* POSISI 2 ELEMEN TENGAH */
-#topCenter { 
-    top: 0; 
-    left: 0; 
-    object-position: top center; 
-    z-index: 12; 
-    transform-origin: top center; 
+/* SECTION ATAS */
+.top-content {
+    margin-top: 10px;
 }
 
-#bottomCenter { 
-    bottom: 0; 
-    left: 0; 
-    object-position: bottom center; 
-    z-index: 12; 
-    transform-origin: bottom center; 
+.text-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.0rem;
+    color: #585d46;
+    font-weight: 500;
 }
 
-/* KONTEN TEKS TENGAH */
-.container {
-    max-width: 400px !important;
+/* SECTION TENGAH (MENDORONG OTOMATIS TURUN PAS DI ATAS TOMBOL) */
+.middle-content {
+    margin-top: auto;
+    margin-bottom: 5px;
 }
 
-.guest-box {
-    background: rgba(255, 255, 255, 0.88) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(184, 134, 11, 0.35) !important;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+/* NAMA PASANGAN (100% PERSIS CANVA) */
+.couple-name {
+    font-family: 'Amoresa', cursive !important;
+    font-size: 3.1rem;
+    color: #585d46 !important;
+    font-weight: 570;
+    line-height: 1;
+    margin-bottom: 12px;
+
+    -webkit-text-stroke: 0px transparent !important;
+    text-shadow: 0px 1.5px 0px rgba(58, 62, 46, 0.45) !important;
 }
 
-.btn-gold {
-    background-color: var(--primary-gold);
-    color: #fff;
+/* DATA TAMU UNDANGAN */
+.guest-label, 
+.guest-name, 
+.guest-sub {
+    font-family: 'Poppins', sans-serif;
+    color: #585d46 !important;
+    text-shadow: none !important;
+}
+
+.guest-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.guest-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 2px 0;
+}
+
+.guest-sub {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 15px !important;
+}
+
+/* SECTION BAWAH (TOMBOL OPEN INVITATION) */
+.bottom-content {
+    margin-top: 0;
+    margin-bottom: 95px;
+}
+
+/* TOMBOL OPEN INVITATION */
+.btn-canva-brown {
+    background-color: var(--canva-brown);
+    color: #ffffff !important;
+    font-family: 'The Seasons', 'Cormorant Garamond', 'Georgia', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 8px 32px;
     border: none;
-    box-shadow: 0 4px 18px rgba(184, 134, 11, 0.35);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.25s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.btn-gold:hover {
-    background-color: var(--dark-gold);
-    color: #fff;
-    transform: translateY(-3px) scale(1.02);
+.btn-canva-brown:hover {
+    background-color: var(--canva-brown-hover);
+    transform: translateY(-2px);
+    color: #ffffff !important;
 }
 
-#topCenter { 
-    top: 0; 
-    left: 0; 
-    object-position: top center; 
-    z-index: 12; 
-    transform-origin: top center; 
+/* KHUSUS TAMPILAN MOBILE / HP */
+@media (max-width: 576px) {
+    .cover-wrapper {
+        padding: 10px;
+    }
     
-    /* Digeser sedikit ke kanan (2px - 3px) */
-    transform: translateX(4.5px); 
-}
+    .card-canvas {
+        border-radius: 16px;
+        max-height: 750px;
+    }
+
+    .middle-content {
+        margin-bottom: 5px; /* Menyesuaikan posisi turun agar tidak terlalu tinggi di HP */
+    }
+
+    .couple-name {
+        font-size: 3.1rem !important; /* Disesuaikan agar proporsional di layar HP kecil */
+    }
+
+    .bottom-content {
+        margin-bottom: 95px;
+    }
+}   

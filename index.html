@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan - Stephen & Dessy </title>
+    <title>Undangan Pernikahan - Stephen & Dessy</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Custom CSS Khusus Home -->
+    
+    <!-- Google Fonts Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600&family=Italianno&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/index.css">
 
     <!-- GSAP Animation Library -->
@@ -19,42 +20,52 @@
 </head>
 <body>
 
-    <div id="pageWrapper" class="cover-wrapper d-flex align-items-center justify-content-center text-center">
-        <!-- Layer Background Krem Polos -->
-        <div class="cover-bg-plain" id="bgPlain"></div>
+    <div id="pageWrapper" class="cover-wrapper d-flex align-items-center justify-content-center">
         
-        <!-- PENGUNCI LEBAR STAGE (Maksimal 500px) -->
-        <div class="frame-stage">
-            <!-- 6 Layer Potongan Ornamen -->
-            <img src="images/top-left.png" class="frame-part" id="topLeft" alt="Kiri Atas">
-            <img src="images/top-right.png" class="frame-part" id="topRight" alt="Kanan Atas">
-            <img src="images/bottom-right.png" class="frame-part" id="bottomRight" alt="Kanan Bawah">
-            <img src="images/bottom-left.png" class="frame-part" id="bottomLeft" alt="Kiri Bawah">
+        <!-- PANGGUNG KARTU CANVA (MEMANJANG KE BAWAH RASIO 9:16) -->
+        <div class="card-canvas shadow-lg">
             
-            <img src="images/top-center.png" class="frame-part" id="topCenter" alt="Tengah Atas">
-            <img src="images/bottom-center.png" class="frame-part" id="bottomCenter" alt="Tengah Bawah">
+            <!-- BACKGROUND FOTO PREWEDDING UTAMA -->
+            <img src="foto pernikahan/foto index.jpeg" class="photo-bg" id="photoBg" alt="Stephen & Dessy">
+            
+            <!-- OVERLAY FADE VIGNETTE SOFT HALUS -->
+            <div class="photo-overlay"></div>
+
+            <!-- CONTAINER KONTEN -->
+            <div class="content-container d-flex flex-column justify-content-start h-100 text-center" id="mainContainer">
+                
+                <!-- Section Atas -->
+                <div class="top-content">
+                    <p class="text-subtitle mb-0">The Wedding Of :</p>
+                </div>
+
+                <!-- Section Tengah -->
+                <div class="middle-content">
+                    <h1 class="couple-name">Stephen & Dessy</h1>
+                    
+                    <div class="guest-section">
+                        <p class="guest-label mb-1">Kepada Yth.Bpk/Ibu/Saudara/i</p>
+                        <h3 id="guestName" class="guest-name mb-1">Nama Tamu</h3>
+                        <p class="guest-sub mb-0">di Tempat</p>
+                    </div>
+                </div>
+
+                <!-- Section Bawah (Tombol Open Invitation) -->
+                <div class="bottom-content">
+                    <a href="main.html" id="btnOpenInvitation" class="btn btn-canva-brown rounded-pill">
+                        Open Invitation
+                    </a>
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Konten Teks Tengah -->
-        <div class="container position-relative z-2 p-4" id="mainContainer">
-            <p class="text-uppercase tracking-wide mb-2 text-gold fw-semibold">The Wedding Of</p>
-            <h1 class="display-1 font-serif my-3 text-dark">Stephen & Dessy</h1>
-            <p class="mb-4 fw-medium text-secondary">17 Oktober 2026</p>
-
-            <div class="guest-box my-4 p-4 mx-auto shadow-sm">
-                <p class="small mb-1 text-uppercase text-muted">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-                <h3 id="guestName" class="h4 fw-bold mb-0 text-dark">Tamu Undangan</h3>
-            </div>  
-
-            <a href="main.html" id="btnOpenInvitation" class="btn btn-gold btn-lg rounded-pill px-4 py-2 mt-2 shadow">
-                <i class="bi bi-envelope-open-fill me-2"></i>Buka Undangan
-            </a>
-        </div>
     </div>
 
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Custom JS Khusus Home -->
+    <!-- Custom JS -->
     <script src="js/index.js"></script>
 </body>
 </html>
