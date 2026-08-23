@@ -24,7 +24,7 @@
     --timer-bg: #4a3a30;
     --timer-text: #f0e6dd;
     --bg-outer: #dfdbd5;
-    --canvas-bg: #f3f3f3; /* Warna background murni #f3f3f3 sesuai request */
+    --canvas-bg: #f3f3f3; /* Warna background murni studio #f3f3f3 */
 }
 
 * {
@@ -44,6 +44,7 @@ html, body {
     align-items: center;
 }
 
+/* WRAPPER LUAR (LATAR BACKGROUND DI SEKELILING KARTU) */
 .main-wrapper {
     position: relative;
     width: 100vw;
@@ -54,7 +55,7 @@ html, body {
     padding: 15px;
 }
 
-/* DIMENSI CARD CANVAS (PRESISI SAMA SEPERTI INDEX & CANVA) */
+/* CARD CANVAS (PERSIS BINGKAI KARTU INDEX) */
 .card-canvas {
     position: relative;
     width: 100%;
@@ -73,24 +74,23 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 30px 0 35px 0; /* Padding atas bawah saja, samping 0 biar foto mepet */
+    padding: 25px 0 30px 0;
 }
 
 /* 1. HEADER TITLE */
 .top-content {
     padding: 0 20px;
-    margin-top: 25px !important; 
+    margin-top: 25px !important;
 }
 
 .text-subtitle {
     font-family: 'Poppins', sans-serif;
     font-size: 1.0rem;
     color: var(--olive-green);
-        /* Mengangkat tulisan "The Wedding Of :" ke atas tanpa menggeser Stephen & Dessy */
-    transform: translateY(-8px) !important; 
+    font-weight: 500;
+    transform: translateY(-8px) !important;
     margin-bottom: 2px !important;
 }
-
 
 .couple-name {
     font-family: 'Amoresa', cursive !important;
@@ -99,13 +99,14 @@ html, body {
     font-weight: 570;
     line-height: 1.1;
     text-shadow: 0px 1.5px 0px rgba(58, 62, 46, 0.45) !important;
+    white-space: nowrap !important;
 }
 
-/* 2. FOTO PREWEDDING (MEPET KE UJUNG KIRI & KANAN KARTU) */
+/* 2. FOTO PREWEDDING (MEPET PINGGIR KARTU) */
 .photo-bleed-wrapper {
     width: 100%;
     overflow: hidden;
-    margin: 5px 0 0 0 !important; /* Margin atas diminimalkan */
+    margin: 5px 0 0 0 !important;
 }
 
 .photo-main {
@@ -116,10 +117,10 @@ html, body {
     display: block;
 }
 
-/* 3. COUNTDOWN TIMER STYLING (FLIP CLOCK COOKIE STYLE) */
+/* 3. COUNTDOWN TIMER STYLING */
 .countdown-section {
     padding: 0 20px;
-    margin-top: -10px !important; /* MARGIN MINUS UNTUK MENAIKKAN COUNTDOWN TIMER KE ATAS */
+    margin-top: -10px !important;
     margin-bottom: 25px !important;
 }
 
@@ -152,7 +153,6 @@ html, body {
     overflow: hidden;
 }
 
-/* Garis pembagi horizontal khas jam flip Canva */
 .countdown-display .flip-line {
     position: absolute;
     top: 50%;
@@ -199,18 +199,18 @@ html, body {
     color: #ffffff !important;
 }
 
-/* TAMPILAN MOBILE / HP */
+/* KHUSUS TAMPILAN MOBILE / HP (BINGKAI KARTU MELAYANG SAMA PERSIS INDEX) */
 @media (max-width: 576px) {
     .main-wrapper {
-        padding: 10px;
+        padding: 10px; /* Menjaga agar background krem di luar kartu tetap terlihat */
     }
 
     .card-canvas {
         border-radius: 16px;
-        max-height: 750px;
+        max-height: 750px; /* Menjaga proporsi kartu agar tidak melar memanjang */
     }
 
     .couple-name {
-        font-size: 2.9rem !important;
+        font-size: 2.7rem !important; /* Disesuaikan agar nama tetap dalam satu baris horizontal */
     }
 }
