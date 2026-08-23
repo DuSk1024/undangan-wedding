@@ -18,8 +18,8 @@
 }
 
 :root {
-    --olive-green: #3d4a3e;    /* Hijau olive gelap */
-    --canva-brown: #a88d7d;     /* Cokelat tombol Canva */
+    --olive-green: #3d4a3e;
+    --canva-brown: #a88d7d;
     --canva-brown-hover: #967b6b;
     --text-dark: #1a1a1a;
     --text-muted: #2b2b2b;
@@ -50,24 +50,25 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 15px;
+    overflow: hidden;
 }
 
-/* DIMENSI CARD CANVAS (FLEXIBLE BISA RESPONSIF) */
+/* CARD CANVAS: UKURAN ASLI DIKUNCI (480px x 750px) */
 .card-canvas {
     position: relative;
-    width: 100%;
-    max-width: 480px;
-    height: 100%;
-    max-height: 750px;
-    aspect-ratio: 9 / 16;
+    width: 480px !important;
+    height: 750px !important;
+    min-width: 480px !important;
+    min-height: 750px !important;
     overflow: hidden;
     border-radius: 20px;
     background-color: #ffffff !important;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+    transform-origin: center center;
+    transition: transform 0.1s ease-out;
 }
 
-/* FOTO BACKGROUND (50% TRANSPARANSI - TAJAM TANPA BLUR) */
+/* FOTO BACKGROUND */
 .photo-bg {
     position: absolute;
     top: 0;
@@ -76,29 +77,25 @@ html, body {
     height: 115%;
     object-fit: cover;
     object-position: center top;
-
     opacity: 0.586 !important;
     filter: none !important;
-
     transform: translateY(-70px) scale(1.05);
     z-index: 0;
 }
 
-/* LAPISAN OVERLAY PUTIH SUPER TIPIS HALUS */
+/* LAPISAN OVERLAY PUTIH TIPIS */
 .photo-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-
     background: rgba(255, 255, 255, 0.04) !important;
-
     pointer-events: none;
     z-index: 1;
 }
 
-/* CONTAINER LAYER KONTEN (PANGGUNG FLEXBOX AGAR POSITIONING OTOMATIS) */
+/* CONTAINER LAYER KONTEN */
 .content-container {
     position: relative;
     z-index: 10;
@@ -121,13 +118,13 @@ html, body {
     font-weight: 500;
 }
 
-/* SECTION TENGAH (MENDORONG OTOMATIS TURUN PAS DI ATAS TOMBOL) */
+/* SECTION TENGAH */
 .middle-content {
     margin-top: auto;
     margin-bottom: 5px;
 }
 
-/* NAMA PASANGAN (100% PERSIS CANVA) */
+/* NAMA PASANGAN */
 .couple-name {
     font-family: 'Amoresa', cursive !important;
     font-size: 3.1rem;
@@ -135,7 +132,7 @@ html, body {
     font-weight: 570;
     line-height: 1;
     margin-bottom: 12px;
-
+    white-space: nowrap !important;
     -webkit-text-stroke: 0px transparent !important;
     text-shadow: 0px 1.5px 0px rgba(58, 62, 46, 0.45) !important;
 }
@@ -166,7 +163,7 @@ html, body {
     margin-bottom: 15px !important;
 }
 
-/* SECTION BAWAH (TOMBOL OPEN INVITATION) */
+/* SECTION BAWAH */
 .bottom-content {
     margin-top: 0;
     margin-bottom: 95px;
@@ -193,27 +190,3 @@ html, body {
     transform: translateY(-2px);
     color: #ffffff !important;
 }
-
-/* KHUSUS TAMPILAN MOBILE / HP */
-@media (max-width: 576px) {
-    .cover-wrapper {
-        padding: 10px;
-    }
-    
-    .card-canvas {
-        border-radius: 16px;
-        max-height: 750px;
-    }
-
-    .middle-content {
-        margin-bottom: 25px; /* Menyesuaikan posisi turun agar tidak terlalu tinggi di HP */
-    }
-
-    .couple-name {
-        font-size: 2.5rem !important; /* Disesuaikan agar proporsional di layar HP kecil */
-    }
-
-    .bottom-content {
-        margin-bottom: 95px;
-    }
-}   
