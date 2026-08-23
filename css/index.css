@@ -8,13 +8,14 @@
 body {
     font-family: 'Poppins', sans-serif;
     color: var(--dark-accent);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
     background-color: var(--bg-krem);
-    background-image: url('../images/bg-plain.png');
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .font-serif {
@@ -25,170 +26,115 @@ body {
     color: var(--primary-gold) !important;
 }
 
+/* Base Wrapper Full Screen */
+.cover-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-krem);
+}
+
+/* Background Krem Polos */
+.cover-bg-plain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-krem);
+    background-image: url('../images/bg-plain.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 0;
+}
+
+/* STAGE PENGUNCI LEBAR */
+.frame-stage {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: 500px;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* BASE STYLE UNTUK SEMUA ELEMENT ORNAMEN */
+.frame-part {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    mix-blend-mode: lighten; /* Menghilangkan latar hitam pekat */
+    background: transparent !important;
+}
+
+/* POSISI 4 SUDUT */
+#topLeft { top: 0; left: 0; object-position: top left; z-index: 10; }
+#topRight { top: 0; right: 0; object-position: top right; z-index: 10; }
+#bottomRight { bottom: 0; right: 0; object-position: bottom right; z-index: 10; }
+#bottomLeft { bottom: 0; left: 0; object-position: bottom left; z-index: 10; }
+
+/* POSISI 2 ELEMEN TENGAH */
+#topCenter { 
+    top: 0; 
+    left: 0; 
+    object-position: top center; 
+    z-index: 12; 
+    transform-origin: top center; 
+}
+
+#bottomCenter { 
+    bottom: 0; 
+    left: 0; 
+    object-position: bottom center; 
+    z-index: 12; 
+    transform-origin: bottom center; 
+}
+
+/* KONTEN TEKS TENGAH */
 .container {
-    max-width: 460px !important;
-    margin: 0 auto;
+    max-width: 400px !important;
 }
 
-/* Header & Glassmorphism Cards */
-.hero-section {
-    min-height: 100vh;
-}
-
-.card {
-    background: rgba(255, 255, 255, 0.85) !important;
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(184, 134, 11, 0.3) !important;
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.08) !important;
+.guest-box {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(184, 134, 11, 0.35) !important;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
 }
 
 .btn-gold {
     background-color: var(--primary-gold);
     color: #fff;
     border: none;
-    box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+    box-shadow: 0 4px 18px rgba(184, 134, 11, 0.35);
     transition: all 0.3s ease;
 }
 
 .btn-gold:hover {
     background-color: var(--dark-gold);
     color: #fff;
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.02);
 }
 
-.time-box {
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--dark-accent);
-    padding: 10px 14px;
-    border-radius: 10px;
-    min-width: 65px;
-    border: 1px solid rgba(184, 134, 11, 0.4);
-}
-
-.time-box span {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-
-.profile-img {
-    width: 130px;
-    height: 130px;
-    object-fit: cover;
-    border: 3px solid var(--primary-gold);
-}
-
-/* Floating Music Button */
-.btn-music-float {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    z-index: 9999;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background-color: var(--primary-gold);
-    color: #fff;
-    border: 2px solid #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    cursor: pointer;
-}
-
-.spin-icon {
-    animation: rotateDisc 3s linear infinite;
-    display: inline-block;
-}
-
-.paused {
-    animation-play-state: paused;
-}
-
-@keyframes rotateDisc {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* AOS Custom Pop-Out Scroll Animation */
-[data-aos="pop-out"] {
-    transform: scale(0.4);
-    opacity: 0;
-    transition-property: transform, opacity;
-}
-
-[data-aos="pop-out"].aos-animate {
-    transform: scale(1);
-    opacity: 1;
-}
-
-/* Page Entry Slide Animation */
-.page-entry-slide {
-    animation: slideInFromBottom 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-@keyframes slideInFromBottom {
-    0% { opacity: 0; transform: translateY(50px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Floating Hearts & Toast Notifications */
-.popout-heart {
-    position: fixed;
-    bottom: -20px;
-    z-index: 9998;
-    color: var(--primary-gold);
-    font-size: 1.4rem;
-    pointer-events: none;
-    opacity: 0;
-    animation: popUpAndFloat 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes popUpAndFloat {
-    0% { opacity: 0; transform: translateY(0) scale(0.3) rotate(0deg); }
-    20% { opacity: 0.9; transform: translateY(-100px) scale(1.2) rotate(15deg); }
-    100% { opacity: 0; transform: translateY(-500px) scale(0.8) rotate(-20deg); }
-}
-
-.toast-container-custom {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    pointer-events: none;
-}
-
-.toast-popout {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--primary-gold);
-    border-radius: 12px;
-    padding: 12px 18px;
-    min-width: 240px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-    animation: popOutIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.toast-popout.hide {
-    animation: popOutOut 0.5s forwards;
-}
-
-@keyframes popOutIn {
-    0% { opacity: 0; transform: scale(0.5) translateY(50px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-@keyframes popOutOut {
-    0% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.8) translateY(20px); }
+#topCenter { 
+    top: 0; 
+    left: 0; 
+    object-position: top center; 
+    z-index: 12; 
+    transform-origin: top center; 
+    
+    /* Digeser sedikit ke kanan (2px - 3px) */
+    transform: translateX(4.5px); 
 }

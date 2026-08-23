@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                     // TERUSKAN NAMA TAMU KE INDEX.HTML
                     if (guestParam) {
-                        window.location.href = "index.html?to=" + encodeURIComponent(guestParam);
+                        window.location.href = "main.html?to=" + encodeURIComponent(guestParam);
                     } else {
                         window.location.href = "index.html";
                     }
