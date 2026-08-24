@@ -7,8 +7,9 @@
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Poppins:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
@@ -20,68 +21,339 @@
 
     <div class="main-wrapper d-flex align-items-center justify-content-center">
         
-        <!-- CARD CANVAS (RASIO CANVA PRESISI 9:16) -->
+        <!-- CARD CANVAS (CONTAINER UTAMA) -->
         <div class="card-canvas shadow-lg">
             
-            <div class="content-container text-center">
+            <!-- AREA SCROLLABLE (TEMPAT PAGE 1, PAGE 2, DST) -->
+            <div class="scroll-container">
                 
-                <!-- 1. HEADER TITLE (ATAS FOTO) -->
-                <div class="top-content">
-                    <p class="text-subtitle mb-0">The Wedding Of :</p>
-                    <h1 class="couple-name mb-0">Stephen & Dessy</h1>
-                </div>
-
-                <!-- 2. FOTO PREWEDDING (MEPET PINGGIR TANPA PADDING) -->
-                <div class="photo-bleed-wrapper">
-                    <img src="foto pernikahan/fotoslideshow1.jpeg" alt="Stephen & Dessy" class="photo-main">
-                </div>
-
-                <!-- 3. COUNTDOWN TIMER SECTION -->
-                <div class="countdown-section">
-                    <p class="countdown-title mb-2">COUNTDOWN TIMER</p>
-                    
-                    <div class="countdown-display d-flex justify-content-center align-items-center gap-2 mb-3">
-                        <!-- DAYS -->
-                        <div class="time-unit">
-                            <div class="flip-card">
-                                <span id="days">003</span>
-                                <div class="flip-line"></div>
-                            </div>
-                            <small class="unit-label">DAYS</small>
+                <!-- PAGE 1: HOME & TIMER -->
+                <section class="card-page">
+                    <div class="content-container text-center">
+                        
+                        <!-- 1. HEADER TITLE -->
+                        <div class="top-content">
+                            <p class="text-subtitle mb-0">The Wedding Of :</p>
+                            <h1 class="couple-name mb-0">Stephen & Dessy</h1>
                         </div>
 
-                        <span class="colon">:</span>
-
-                        <!-- HOURS -->
-                        <div class="time-unit">
-                            <div class="flip-card">
-                                <span id="hours">22</span>
-                                <div class="flip-line"></div>
+                        <!-- 2. FOTO PREWEDDING (SLIDESHOW) -->
+                        <div class="photo-bleed-wrapper">
+                            <div id="weddingCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="foto pernikahan/foto1.jpeg" alt="Stephen & Dessy 1" class="photo-main">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="foto pernikahan/foto2.jpeg" alt="Stephen & Dessy 2" class="photo-main">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="foto pernikahan/foto3.jpeg" alt="Stephen & Dessy 3" class="photo-main">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="foto pernikahan/foto5.jpeg" alt="Stephen & Dessy 4" class="photo-main">
+                                    </div>
+                                </div>
                             </div>
-                            <small class="unit-label">HRS</small>
                         </div>
 
-                        <span class="colon">:</span>
+                        <!-- 3. COUNTDOWN TIMER SECTION -->
+                        <div class="countdown-section">
+                            <p class="countdown-title mb-2">COUNTDOWN TIMER</p>
+                            
+                            <div class="countdown-display d-flex justify-content-center align-items-center gap-2 mb-3">
+                                <!-- DAYS -->
+                                <div class="time-unit">
+                                    <div class="flip-card">
+                                        <span id="days">00</span>
+                                        <div class="flip-line"></div>
+                                    </div>
+                                    <small class="unit-label">DAYS</small>
+                                </div>
 
-                        <!-- MINUTES -->
-                        <div class="time-unit">
-                            <div class="flip-card">
-                                <span id="minutes">29</span>
-                                <div class="flip-line"></div>
+                                <span class="colon">:</span>
+
+                                <!-- HOURS -->
+                                <div class="time-unit">
+                                    <div class="flip-card">
+                                        <span id="hours">00</span>
+                                        <div class="flip-line"></div>
+                                    </div>
+                                    <small class="unit-label">HRS</small>
+                                </div>
+
+                                <span class="colon">:</span>
+
+                                <!-- MINUTES -->
+                                <div class="time-unit">
+                                    <div class="flip-card">
+                                        <span id="minutes">00</span>
+                                        <div class="flip-line"></div>
+                                    </div>
+                                    <small class="unit-label">MINS</small>
+                                </div>
+                                
+                                <span class="colon">:</span>
+
+                                <!-- SECONDS -->
+                                <div class="time-unit">
+                                    <div class="flip-card">
+                                        <span id="seconds">00</span>
+                                        <div class="flip-line"></div>
+                                    </div>
+                                    <small class="unit-label">SECS</small>
+                                </div>
                             </div>
-                            <small class="unit-label">MINS</small>
+
+                            <!-- TOMBOL SAVE THE DATE -->
+                            <div class="button-wrapper">
+                                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Stephen+%26+Dessy&dates=20261017T010000Z/20261017T050000Z&details=Acara+Pernikahan+Stephen+%26+Dessy.+Mohon+doa+restu.&location=Gedung+Grand+Ballroom,+Jakarta" 
+                                   target="_blank" rel="noopener noreferrer" class="btn btn-canva-brown rounded-pill">
+                                    Save The Date !
+                                </a>
+                            </div>
                         </div>
 
                     </div>
+                </section>
 
-                    <!-- TOMBOL SAVE THE DATE -->
-                    <div class="button-wrapper">
-                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Stephen+%26+Dessy&dates=20261017T010000Z/20261017T050000Z&details=Acara+Pernikahan+Stephen+%26+Dessy.+Mohon+doa+restu.&location=Gedung+Grand+Ballroom,+Jakarta" 
-                        target="_blank" rel="noopener noreferrer" class="btn btn-canva-brown rounded-pill">
-                            Save The Date !
-                        </a>
+                <!-- PAGE 2: AYAT ALKITAB & FOTO MUTER (RAPET TANPA SELA) -->
+                <section class="card-page" id="pageVerse">
+                    <div class="bible-container">
+                        
+                        <!-- STRIP FOTO ATAS (MUTER KE KANAN) -->
+                        <div class="photo-strip-container strip-top">
+                            <div class="photo-strip-track" id="trackTop">
+                                <!-- Set 1 -->
+                                <img src="foto pernikahan/foto6.jpg" alt="Foto 6">
+                                <img src="foto pernikahan/foto11.jpg" alt="Foto 11">
+                                <img src="foto pernikahan/foto8.jpg" alt="Foto 8">
+                                <img src="foto pernikahan/foto13.jpg" alt="Foto 13">
+                                <!-- Set 2 (Duplicate 1) -->
+                                <img src="foto pernikahan/foto6.jpg" alt="Foto 6">
+                                <img src="foto pernikahan/foto11.jpg" alt="Foto 11">
+                                <img src="foto pernikahan/foto8.jpg" alt="Foto 8">
+                                <img src="foto pernikahan/foto13.jpg" alt="Foto 13">
+                                <!-- Set 3 (Duplicate 2 - Menutup sela kosong) -->
+                                <img src="foto pernikahan/foto6.jpg" alt="Foto 6">
+                                <img src="foto pernikahan/foto11.jpg" alt="Foto 11">
+                                <img src="foto pernikahan/foto8.jpg" alt="Foto 8">
+                                <img src="foto pernikahan/foto13.jpg" alt="Foto 13">
+                            </div>
+                        </div>
+
+                        <!-- ORNAMEN BUNGA KANAN TENGAH -->
+                        <img src="images/bunga3.png" alt="Flower Ornament" class="flower-middle-right">
+
+                        <!-- KONTEN TEKS MATIUS 19:6 -->
+                        <div class="bible-content">
+                            <h2 class="bible-title">Matius 19:6</h2>
+                            <p class="bible-text">
+                                "Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia."
+                            </p>
+                        </div>
+
+                        <!-- STRIP FOTO BAWAH (MUTER KE KIRI) -->
+                        <div class="photo-strip-container strip-bottom">
+                            <div class="photo-strip-track" id="trackBottom">
+                                <!-- Set 1 -->
+                                <img src="foto pernikahan/foto10.jpg" alt="Foto 10">
+                                <img src="foto pernikahan/foto7.jpg" alt="Foto 7">
+                                <img src="foto pernikahan/foto12.jpg" alt="Foto 12">
+                                <img src="foto pernikahan/foto9.jpg" alt="Foto 9">
+                                <!-- Set 2 (Duplicate 1) -->
+                                <img src="foto pernikahan/foto10.jpg" alt="Foto 10">
+                                <img src="foto pernikahan/foto7.jpg" alt="Foto 7">
+                                <img src="foto pernikahan/foto12.jpg" alt="Foto 12">
+                                <img src="foto pernikahan/foto9.jpg" alt="Foto 9">
+                                <!-- Set 3 (Duplicate 2 - Menutup sela kosong) -->
+                                <img src="foto pernikahan/foto10.jpg" alt="Foto 10">
+                                <img src="foto pernikahan/foto7.jpg" alt="Foto 7">
+                                <img src="foto pernikahan/foto12.jpg" alt="Foto 12">
+                                <img src="foto pernikahan/foto9.jpg" alt="Foto 9">
+                            </div>
+                        </div>
+
                     </div>
-                </div>
+                </section>
+
+                <!-- PAGE 3: MEMPELAI PRIA (STEPHEN) -->
+                <section class="card-page" id="pageGroom">
+                    <div class="groom-page-wrapper">
+                        
+                        <!-- ORNAMEN BUNGA DI POJOK KIRI ATAS -->
+                        <img src="images/bunga4.png" alt="Flower Ornament" class="flower-top-left" id="groomFlower">
+
+                        <!-- FRAME ARCH (BINGKAI LENGKUNG) DAN FOTO -->
+                        <div class="arch-frame-wrapper">
+                            <img src="foto pernikahan/stephen.png" alt="Stephen Maruli Tua Gultom" class="groom-photo">
+                        </div>
+
+                        <!-- INFORMASI NAMA DAN ORANG TUA -->
+                        <div class="groom-info text-center">
+                            <h2 class="groom-fullname">Stephen Maruli Tua Gultom</h2>
+                            <p class="parents-label">Putra dari:</p>
+                            <p class="parents-names">
+                                Bapak Jondata Gultom & Ibu Justina<br>Br. Manullang
+                            </p>
+                        </div>
+
+                        <!-- TOMBOL INSTAGRAM (PILL BUTTON) -->
+                        <div class="instagram-wrapper text-center">
+                            <a href="https://instagram.com/stphn_m" target="_blank" class="btn-instagram">
+                                <i class="bi bi-instagram"></i>
+                                <span>stphn_m</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- PAGE 4: MEMPELAI WANITA (DESSY) -->
+                <section class="card-page" id="pageBride">
+                    <div class="groom-page-wrapper">
+                        
+                        <!-- FRAME ARCH (BINGKAI LENGKUNG) DAN FOTO -->
+                        <div class="arch-frame-wrapper">
+                            <img src="foto pernikahan/dessy.jpeg" alt="Dessy Oktaviani Lumban Batu S.Ak" class="bride-photo">
+                        </div>
+
+                        <!-- INFORMASI NAMA DAN ORANG TUA -->
+                        <div class="groom-info text-center">
+                            <h2 class="bride-fullname">Dessy Oktaviani Lumban Batu S.Ak</h2>
+                            <p class="parents-labeld">Putri dari:</p>
+                            <p class="parents-names">
+                                Bapak Donny R. Lumban Batu & Ibu Lince Ria<br>Br Nababan
+                            </p>
+                        </div>
+
+                        <!-- TOMBOL INSTAGRAM (PILL BUTTON) -->
+                        <div class="instagram-wrapper text-center">
+                            <a href="https://instagram.com/dessyoct_" target="_blank" class="btn-instagram">
+                                <i class="bi bi-instagram"></i>
+                                <span>dessyoct_</span>
+                            </a>
+                        </div>
+
+                        <!-- ORNAMEN BUNGA BAWAH (MENUMPUL DI TEPI DASAR) -->
+                        <img src="images/bunga2.png" alt="Flower Ornament" class="flower-bottom-banner" id="brideFlower">
+
+                    </div>
+                </section>
+
+                <!-- PAGE 5: PEMBERKATAN (WEDDING EVENT) -->
+                <section class="card-page" id="pagePemberkatan">
+                    <div class="event-page-wrapper">
+                        
+                        <!-- HEADER TITLE -->
+                        <div class="event-header text-center">
+                            <h2 class="event-subtitle">Wedding Event</h2>
+                            <h1 class="event-title">Pemberkatan</h1>
+                        </div>
+
+                        <!-- TANGGAL & WAKTU (GRID LAYOUT CANVA) -->
+                        <div class="date-badge-wrapper">
+                            <div class="date-top-label">OCT</div>
+                            
+                            <div class="date-main-grid">
+                                <div class="date-side-box text-end">
+                                    <span class="day-name">SATURDAY</span>
+                                </div>
+                                <div class="date-center-number">
+                                    <span>17</span>
+                                </div>
+                                <div class="date-side-box text-start">
+                                    <span class="time-text">09:00 WIB</span>
+                                </div>
+                            </div>
+
+                            <div class="date-bottom-label">2026</div>
+                        </div>
+
+                        <!-- LOKASI ACARA -->
+                        <div class="location-wrapper text-center">
+                            <p class="location-label">Bertempat di:</p>
+                            <p class="location-address">
+                                GKPI Tangerang, Jl. Prambananan I Blok B. No 19 – 21<br>
+                                Perumnas Karawaci Tangerang, Banten
+                            </p>
+
+                            
+                            <!-- TOMBOL LOKASI ELEGANT GOOGLE MAPS -->
+                            <div class="location-btn-wrapper">
+                                <a href="https://maps.google.com/?q=GKPI+Tangerang" target="_blank" class="btn-location-card">
+                                    <div class="btn-location-icon">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                    </div>
+                                    <div class="btn-location-content">
+                                        <span class="btn-location-title">LOKASI PEMBERKATAN</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- ORNAMEN BUNGA KIRI & KANAN BAWAH (bunga5.jpg) -->
+                        <img src="images/bunga5.png" alt="Flower Ornament Bottom Corners" class="flower-bottom-corners" id="pemberkatanFlower">
+
+                    </div>
+                </section>
+
+                <!-- PAGE 6: RESEPSI (WEDDING EVENT) -->
+                <section class="card-page" id="pageResepsi">
+                    <div class="event-page-wrapper">
+                        
+                        <!-- HEADER TITLE -->
+                        <div class="event-header text-center">
+                            <h2 class="event-subtitle">Wedding Event</h2>
+                            <h1 class="event-title">Resepsi</h1>
+                        </div>
+
+                        <!-- TANGGAL & WAKTU (GRID LAYOUT) -->
+                        <div class="date-badge-wrapper">
+                            <div class="date-top-label">OCT</div>
+                            
+                            <div class="date-main-grid">
+                                <div class="date-side-box">
+                                    <span class="day-name">SATURDAY</span>
+                                </div>
+                                <div class="date-center-number">
+                                    <span>17</span>
+                                </div>
+                                <div class="date-side-box">
+                                    <span class="time-text">12:00 WIB</span>
+                                </div>
+                            </div>
+
+                            <div class="date-bottom-label">2026</div>
+                        </div>
+
+                        <!-- LOKASI ACARA RESEPSI -->
+                        <div class="location-wrapper text-center">
+                            <p class="location-label">Bertempat di:</p>
+                            <p class="location-address">
+                                GEDUNG TOS HOTEL RESIDENCE<br>
+                                Jl. Dasan Indah Bojong Nangka, Kecamatan Kelapa Dua,<br>
+                                Kabupaten Tangerang, Banten
+                            </p>
+
+                            <!-- TOMBOL LOKASI RESEPSI -->
+                            <div class="location-btn-wrapper">
+                                <a href="https://maps.google.com/?q=Gedung+TOS+Hotel+Residence+Kelapa+Dua+Tangerang" target="_blank" class="btn-location-card">
+                                    <div class="btn-location-icon">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                    </div>
+                                    <div class="btn-location-content">
+                                        <span class="btn-location-title">LOKASI RESEPSI</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- ORNAMEN BUNGA KIRI & KANAN BAWAH (bunga5.jpg) -->
+                        <img src="images/bunga5.png" alt="Flower Ornament Bottom Corners" class="flower-bottom-corners" id="resepsiFlower">
+
+                    </div>
+                </section>
 
             </div>
 
@@ -89,6 +361,8 @@
 
     </div>
 
+    <!-- Bootstrap 5 JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
     <script src="js/main.js"></script>
 </body>
