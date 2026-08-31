@@ -1,703 +1,1830 @@
-/* DEKLARASI FONT KUSTOM LOKAL */
+/* ==========================================
+   1. FONT KUSTOM LOKAL
+========================================== */
 @font-face {
-    font-family: 'Amoresa';
-    src: url('../fonts/Amoresa Regular.otf') format('opentype'),
-         url('../fonts/Amoresa Aged.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Amoresa';
+  src:
+    url('../fonts/Amoresa Regular.otf') format('opentype'),
+    url('../fonts/Amoresa Aged.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'The Seasons';
-    src: url('../fonts/Fontspring-DEMO-theseasons-reg.otf') format('opentype'),
-         url('../fonts/Fontspring-DEMO-theseasons-bd.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'The Seasons';
+  src:
+    url('../fonts/Fontspring-DEMO-theseasons-reg.otf') format('opentype'),
+    url('../fonts/Fontspring-DEMO-theseasons-bd.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
+/* ==========================================
+   2. COLOR PALETTE MEWAH NATURAL (SAGE & OLIVE)
+========================================== */
 :root {
-    --olive-green: #585d46;
-    --canva-brown: #a88d7d;
-    --canva-brown-hover: #967b6b;
-    --timer-bg: #4a3a30;
-    --timer-text: #f0e6dd;
-    --bg-outer: #dfdbd5;
-    --canvas-bg: #f3f3f3;
+  --olive-dark: #2f3625;
+  --olive-sage: #535d48;
+  --canva-brown: #8e7766;
+  --timer-bg: #373129;
+  --timer-text: #f0e8dd;
+  --bg-canvas: #dfdbd5;
+  --bg-outer: #dfdbd5;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-outer);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-outer);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-wrapper {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* CARD CANVAS: DIKUNCI UKURAN ASLI DESAIN (480px x 750px) */
+/* ==========================================
+   3. BINGKAI CANVAS UTAMA HP (480px x 750px)
+========================================== */
 .card-canvas {
-    position: relative;
-    width: 480px !important;
-    height: 750px !important;
-    min-width: 480px !important;
-    min-height: 750px !important;
-    background-color: var(--canvas-bg) !important;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
-    overflow: hidden;
-    transform-origin: center center; /* Pusat zoom dari tengah */
-    transition: transform 0.1s ease-out;
+  position: relative;
+  width: 480px !important;
+  height: 750px !important;
+  background-color: var(--bg-canvas) !important;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
 }
 
-/* CONTAINER SCROLL DALAM BINGKAI KARTU (LEBIH SMOOTH) */
+/* ==========================================
+   4. BACKGROUND DINAMIS TIMBUL (PARALLAX CINEMATIC)
+========================================== */
+.fixed-bg-stack {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.08);
+  transition:
+    opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 1.6s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity, transform;
+}
+
+.bg-slide.active {
+  opacity: 0.76 !important;
+  transform: scale(1);
+}
+
+.bg-overlay-vignette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ==========================================
+   5. CONTAINER SCROLL CONTINUOUS
+========================================== */
 .scroll-container {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    
-    /* Menggunakan proximity agar transisi luncurannya terasa natural */
-    scroll-snap-type: y proximity; 
-    scroll-behavior: smooth;
-    
-    -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Sembunyikan Scrollbar */
 .scroll-container::-webkit-scrollbar {
-    display: none;
-}
-.scroll-container {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  display: none !important;
 }
 
-/* Frame Halaman Satuan */
-.card-page {
-    width: 100%;
-    height: 750px; /* Sesuai tinggi pasti card-canvas */
-    min-height: 750px;
-    max-height: 750px;
-    scroll-snap-align: start;
-    scroll-snap-stop: always; /* Memastikan setiap discroll langsung mengunci 1 halaman penuh, tidak bisa kebablasan */
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
+.single-continuous-section {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  padding-top: 35px;
+  padding-right: 0;
+  padding-bottom: 90px;
+  padding-left: 0;
+  overflow: visible !important;
 }
 
-/* ===== PAGE 1: HOME & TIMER ===== */
-.content-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 25px 0 30px 0;
+/* ==========================================
+   6. REVEAL ANIMATION (FLOATING FADE)
+========================================== */
+.reveal-element {
+  opacity: 0;
+  transform: translateY(28px) scale(0.96);
+  transition:
+    opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
-/* 1. HEADER TITLE */
-.top-content {
-    padding: 0 20px;
-    margin-top: 25px !important;
+.reveal-element.active-pop {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
 }
 
-.text-subtitle {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.0rem;
-    color: var(--olive-green);
-    font-weight: 500;
-    transform: translateY(-8px) !important;
-    margin-bottom: 2px !important;
+/* ==========================================
+   7. KARTU GLASS TIPIS & TRANSPARAN
+========================================== */
+.event-clean-card,
+.couple-profile-card,
+.verse-clean-card,
+.gallery-clean-card {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(0.1px) saturate(120%);
+  -webkit-backdrop-filter: blur(5px) saturate(120%);
+  border-radius: 20px;
+  margin-top: 18px;
+  margin-right: 16px;
+  margin-bottom: 18px;
+  margin-left: 16px;
+  padding-top: 32px;
+  padding-right: 20px;
+  padding-bottom: 30px;
+  padding-left: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  /* Wajib pasang versi webkit untuk iOS/Safari iPhone */
+  -webkit-backdrop-filter: blur(0.1px) saturate(120%) !important;
+  backdrop-filter: blur(0.1px) saturate(120%) !important;
+  
+  /* Pengaman agar GPU iPhone tidak mematikan efek blur */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: backdrop-filter;
 }
 
-.couple-name {
-    font-family: 'Amoresa', cursive !important;
-    font-size: 3.3rem;
-    color: var(--olive-green) !important;
-    font-weight: 570;
-    line-height: 1.1;
-    text-shadow: 0px 1.5px 0px rgba(58, 62, 46, 0.45) !important;
-    white-space: nowrap !important;
-}
-
-/* 2. FOTO PREWEDDING */
-.photo-bleed-wrapper {
-    width: 100%;
-    overflow: hidden;
-    margin: 5px 0 0 0 !important;
-}
-
-.photo-bleed-wrapper .carousel-inner {
-    width: 100%;
-}
-
-.photo-main {
-    width: 100%;
-    height: auto;
-    max-height: 340px;
-    object-fit: cover;
-    display: block;
-}
-
-/* 3. COUNTDOWN TIMER STYLING */
-.countdown-section {
-    padding: 0 20px;
-    margin-top: -10px !important;
-    margin-bottom: 25px !important;
-}
-
-.countdown-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
-    color: var(--olive-green);
-    font-weight: 600;
-    letter-spacing: 1.5px;
-}
-
-.countdown-display .time-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.countdown-display .flip-card {
-    position: relative;
-    background-color: var(--timer-bg);
-    color: var(--timer-text);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 1.4rem;
-    padding: 6px 10px;
-    border-radius: 4px;
-    min-width: 52px;
-    text-align: center;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    overflow: hidden;
-}
-
-.countdown-display .flip-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.countdown-display .colon {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--timer-bg);
-    margin-bottom: 18px;
-}
-
-.countdown-display .unit-label {
-    font-size: 0.65rem;
-    color: #6a6358;
-    font-weight: 600;
-    margin-top: 5px;
-    letter-spacing: 0.8px;
-}
-
-/* TOMBOL SAVE THE DATE */
-.btn-canva-brown {
-    background-color: var(--canva-brown);
-    color: #ffffff !important;
-    font-family: 'The Seasons', 'Cormorant Garamond', 'Georgia', serif;
-    font-size: 1.2rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    padding: 9px 36px;
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.25s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn-canva-brown:hover {
-    background-color: var(--canva-brown-hover);
-    transform: translateY(-2px);
-    color: #ffffff !important;
-}
-
-/* ===== PAGE 2: AYAT ALKITAB (WARNA KEMBALI SEPERTI SEMULA) ===== */
-.bible-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    padding: 0 !important;
-    text-align: center;
-    overflow: hidden;
-    position: relative;
-}
-
-/* ORNAMEN BUNGA KANAN TENGAH (PAGE 2) */
-.flower-middle-right {
-    position: absolute;
-    right: 0 !important;
-    top: 50% !important;
-    transform: translateY(-50%);
-    width: 470px !important; /* Ukuran proporsional menyembul di tepi kanan */
-    height: auto !important;
-    z-index: 10;
-    pointer-events: none;
-    mix-blend-mode: multiply; /* Agar background putih bunga menyatu lembut dengan background kartu */
-}
-
-/* STRIP FOTO RAPET & BESAR */
-.photo-strip-container {
-    width: 100%;
-    height: 205px !important;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.photo-strip-track {
-    display: flex;
-    gap: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: max-content;
-    will-change: transform;
-}
-
-.photo-strip-track img {
-    width: 135px !important;
-    height: 205px !important;
-    object-fit: cover;
-    margin: 0 !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-    flex-shrink: 0;
-    display: block;
-}
-
-/* BIBLE CONTENT & STYLING WARNA ORIGINAL KAMU */
-.bible-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 35px;
-    text-align: center;
-}
-
-.bible-title {
-    font-family: 'Amoresa', cursive !important;
-    font-size: 2.8rem !important;
-    color: var(--olive-green) !important;
-    font-weight: 500;
-    line-height: 1.2;
-    margin-bottom: 10px;
-    text-shadow: 0px 1px 0px rgba(58, 62, 46, 0.3) !important;
-}
-
-.bible-text {
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    color: #4a4f3b;
-    font-weight: 400;
-    line-height: 1.6;
-    max-width: 380px;
+.couple-profile-card {
+  border-top-left-radius: 130px !important;
+  border-top-right-radius: 130px !important;
+  border-bottom-right-radius: 20px !important;
+  border-bottom-left-radius: 20px !important;
+  padding-top: 36px;
 }
 
 
-/* ===== PAGE 3: STYLING MEMPELAI PRIA (PRESISI SLIDE CANVA) ===== */
-.groom-page-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 70px 20px 20px 20px; /* Padding atas ditambah agar arch terdorong pas ke tengah */
-    background-color: var(--canvas-bg);
+/* ==========================================
+   TULISAN GROOM & BRIDE (PASTI TURUN SENDIRIAN)
+========================================== */
+.middle-couple-title {
+  position: relative;
+  z-index: 30 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  width: fit-content !important;
+  max-width: 90%;
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.55) 0%, 
+    rgba(255, 255, 255, 0.25) 100%
+  ) !important;
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-radius: 60px;
+  padding: 16px 36px;
+
+  /* 1. MENURUNKAN BANNER */
+  margin-top: 80px !important;    /* Menurunkan posisi banner sesuai foto kamu */
+
+  /* 2. MENCEGAH ELEMEN DI BAWAHNYA IKUT TURUN */
+  margin-bottom: -10px !important; /* Menarik elemen bawah agar tetap di tempat aslinya */
+
+  margin-left: auto !important;
+  margin-right: auto !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 12px 35px rgba(47, 54, 37, 0.12),
+    inset 0 0 15px rgba(255, 255, 255, 0.6);
 }
 
-/* BUNGA KIRI ATAS (bunga4.jpg) */
-.flower-top-left {
-    position: absolute;
-    top: 0 !important;
-    left: 0 !important;              /* Dikunci di KIRI ATAS */
-    right: auto !important;
-    
-    width: 560px !important; 
-    height: auto !important;
-    
-    object-fit: contain !important; 
-    
-    /* Poros rotasi di kancing di POJOK KIRI ATAS */
-    transform-origin: top left;
-    
-    z-index: 10;
-    pointer-events: none;
-    mix-blend-mode: multiply;
+.couple-subtitle-script {
+  font-family: 'Amoresa', cursive;
+  font-size: 2.2rem;
+  color: var(--canva-brown);
+  display: block;
+  line-height: 1;
+  margin-bottom: 2px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-
-/* BINGKAI LENGKUNG (ARCH FRAME PRESISI) */
-.arch-frame-wrapper {
-    width: 350px; /* Lebar diperbesar agar mepet samping sesuai gambar */
-    height: 440px;
-    margin-top: 0px;
-    margin-bottom: 22px;
-    border-top-left-radius: 175px; /* Setengah dari lebar (350px / 2) agar kubahnya bulat sempurna */
-    border-top-right-radius: 175px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: none; /* Polos tanpa bayangan seperti Canva */
+.couple-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--olive-dark);
+  text-transform: uppercase;
+  margin: 0;
 }
 
-.groom-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 95%; /* Fokus ke area wajah & jas Stephen */
-    display: block;
+.banner-line {
+  display: inline-block;
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--olive-dark), transparent);
 }
 
-/* TEKS INFORMASI MEMPELAI */
-.groom-info {
-    z-index: 2;
-    width: 100%;
-    padding: 0 10px;
+@media screen and (max-width: 576px) {
+  .couple-subtitle-script {
+    font-size: 2.2rem !important;
+  }
+  .couple-tagline {
+    font-size: 0.9rem !important;
+    letter-spacing: 1px !important;
+    white-space: nowrap !important; /* MEMAKSA TEKS TETAP 1 GARIS LURUS */
+  }
+  .banner-line {
+      width: 18px !important; /* Menyesuaikan panjang garis agar seimbang di HP */
+    }
 }
 
-.groom-fullname {
-    font-family: 'Amoresa', cursive !important;
-    font-size: 1.4rem !important; /* Ukuran pas sebaris seperti gambar */
-    color: var(--olive-green) !important;
-    font-weight: 500;
-    line-height: 1.1;
-    margin-bottom: 16px;
-    text-shadow: 0px 1px 0px rgba(58, 62, 46, 0.3) !important;
-    white-space: nowrap !important;
+/* ==========================================
+   8. CANVA ACUAN TYPOGRAPHY (EVENT & DATES)
+========================================== */
+.event-script-header {
+  font-family: 'Amoresa', cursive;
+  font-size: clamp(2rem, 7.5vw, 2.8rem) !important; /* Otomatis menyesuaikan lebar HP */
+  color: var(--olive-dark);
+  margin-bottom: -10px;
+  white-space: nowrap !important; /* MEMAKSA TETAP 1 GARIS LURUS */
+  display: block;
+}
+.event-main-title {
+  font-family: 'The Seasons', serif;
+  font-size: 2.8rem;
+  color: var(--olive-dark);
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
-.parents-label {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.0rem;
-    color: var(--olive-green);
-    font-weight: 700;
-    margin-bottom: 4px;
+.canva-date-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
-.parents-names {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.0rem;
-    color: #4a4f3b;
-    font-weight: 400;
-    line-height: 1.4;
+.date-top-month {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: var(--olive-dark);
+  margin-bottom: 4px;
 }
 
-/* ===== TOMBOL INSTAGRAM PILL BUTTON ===== */
-.instagram-wrapper {
-    margin-top: -4px;
+.date-middle-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 330px;
 }
 
-.btn-instagram {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 4px 18px;
-    border: 1px solid #7c8577;     /* Warna garis pinggir menyesuaikan tema olive */
-    border-radius: 50px;           /* Bentuk kapsul/pill melengkung utuh */
-    background-color: transparent;
-    color: #52594d;                /* Warna teks & icon */
-    text-decoration: none !important;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    transition: all 0.3s ease;
+.date-side-text {
+  flex: 1;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 1000;
+  letter-spacing: 2.5px;
+  color: var(--olive-dark);
+  border-top: 1px solid var(--olive-dark);
+  border-bottom: 1px solid var(--olive-dark);
+  padding-top: 4px;
+  padding-bottom: 4px;
+  text-transform: uppercase;
 }
 
-.btn-instagram:hover {
-    background-color: #7c8577;
-    color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+.date-center-num {
+  font-family: 'The Seasons', serif;
+  font-size: 3.4rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--olive-dark);
 }
 
-.btn-instagram i {
-    font-size: 0.95rem;
-    line-height: 1;
-}
-
-/* STYLING NAMA DESSY (1 BARIS RAPI SEPERTI GAMBAR) */
-.bride-fullname {
-    font-family: 'Amoresa', cursive !important;
-    font-size: 1.4rem !important;
-    color: var(--olive-green) !important;
-    font-weight: 500;
-    line-height: 1.2;
-    margin-top: 10px !important;
-    margin-bottom: 6px !important;
-    white-space: nowrap;
-}
-
-/* NAIKKAN SELURUH KONTEN DI DALAM PAGE BRIDE & GROOM */
-#pageBride .groom-page-wrapper,
-#pageGroom .groom-page-wrapper {
-    padding-top: -17px !important;    /* Dikurangi dari default (misal 30px/40px) jadi 15px agar konten terangkat naik */
-    margin-top: -15px !important;    /* Memberi dorongan ekstra seluruh isi konten naik ke atas */
-}
-
-/* JIKA INGIN FOTO FRAME ARCH DENGAN KHUSUS DINAIKKAN LEBIH BANYAK */
-#pageBride .arch-frame-wrapper,
-#pageGroom .arch-frame-wrapper {
-    margin-top: -10px !important;   /* Menaikkan bingkai foto arch naik ke atas */
-    margin-bottom: 10px !important; /* Merapatkan jarak antara foto dan nama */
-}
-
-/* MERAPATKAN JARAK NAMA KE ATAS */
-.bride-fullname,
-.groom-fullname {
-    margin-top: 5px !important;     /* Merapatkan posisi nama dengan foto */
-    margin-bottom: 4px !important;
-}
-
-/* MENAIKKAN POSISI TOMBOL INSTAGRAM */
-#pageBride .instagram-wrapper,
-#pageGroom .instagram-wrapper {
-    margin-top: 6px !important;
-    margin-bottom: 20px !important;  /* Menjaga tombol IG tidak tertutup oleh bunga bawah */
-    position: relative;
-    z-index: 15;                     /* Memastikan tombol IG berada di atas layer bunga */
-}
-
-/* BUNGA BANNER BAWAH (bunga2.jpg / bunga2.png) */
-.flower-bottom-banner {
-    position: absolute;
-    bottom: -18px !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: auto !important;
-    
-    /* Mencegah gambar tersembunyi atau terpotong */
-    opacity: 1 !important; 
-    z-index: 20 !important;
-    pointer-events: none;
-    
-    /* Menghilangkan background hitam/putih agar transparan sempurna */
-    mix-blend-mode: multiply; 
-    transform-origin: bottom center;
-    transform: scale(1.3);
-}
-
-.bride-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 60%; 
-    display: block;
-}
-
-.parents-labeld {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.0rem;
-    color: var(--olive-green);
-    font-weight: 700;
-    margin-top: 12px;
-    margin-bottom: 4px;
-}
-
-/* ===== PAGE 5: PEMBERKATAN (WEDDING EVENT) ===== */
-.event-page-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 45px 25px 20px 25px;
-    background-color: var(--canvas-bg);
-}
-
-.event-header {
-    margin-top: 16px;
-    margin-bottom: 25px;
-}
-
-.event-subtitle {
-    font-family: 'Amoresa', cursive !important;
-    font-size: 3.2rem !important;
-    color: var(--olive-green) !important;
-    font-weight: 500;
-    line-height: 1.1;
-    margin-bottom: 5px;
-    text-shadow: 0px 1px 0px rgba(58, 62, 46, 0.2);
-}
-
-.event-title {
-    font-family: 'The Seasons', 'Cormorant Garamond', serif !important;
-    font-size: 3.0rem !important;
-    color: #4a4f3b !important;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    margin-top: 20px;
-}
-
-/* BLOK TANGGAL & WAKTU PRESISI CANVA */
-.date-badge-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 30px;
-    width: 100%;
-}
-
-.date-top-label,
-.date-bottom-label {
-    font-family: 'The Seasons', 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
-    color: #555848;
-    letter-spacing: 3px;
-    font-weight: 600;
-}
-
-.date-main-grid {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin: 4px 0;
-    width: 100%;
-    max-width: 380px;
-}
-
-.date-side-box {
-    width: 110px !important;
-    flex: none !important;
-    border-top: 1.5px solid #585d46;
-    border-bottom: 1.5px solid #585d46;
-    padding: 5px 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-}
-
-.day-name, .time-text {
-    font-family: 'The Seasons', 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #4a4f3b;
-    letter-spacing: 1.8px;
-    align-items: center;
-    line-height: 1;
-}
-
-.date-center-number {
-    font-family: 'The Seasons', 'Cormorant Garamond', serif;
-    font-size: 3.6rem;
-    line-height: 0.9;
-    font-weight: 600;
-    color: #414535;
-    padding: 0 4px;
-}
-
-/* LOKASI ACARA */
-.location-wrapper {
-    z-index: 5;
-    max-width: 380px;
+.date-bottom-year {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 5px;
+  color: var(--olive-dark);
+  margin-top: 4px;
 }
 
 .location-label {
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    color: #4a4f3b;
-    margin-bottom: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--olive-dark);
+  margin-top: 15px;
+  margin-bottom: 2px;
 }
 
 .location-address {
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.88rem;
-    color: #4a4f3b;
-    line-height: 1.45;
-    margin-bottom: 22px;
+  font-size: 0.85rem;
+  color: var(--olive-dark);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 
-/* DESIGN TOMBOL LOKASI - STYLE SOLID CLASSIC */
-.location-btn-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 48px;
-    position: relative;
-    z-index: 15;
+.btn-clean-outline {
+  border: 1px solid rgba(47, 54, 37, 0.45);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.85) !important;
+  color: var(--olive-dark) !important;
+  text-decoration: none !important;
+  padding: 8px 24px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
-.btn-location-card {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 9px 28px;
-    background-color: var(--canva-brown, #a88d7d);
-    border: none;
-    border-radius: 50px;
-    color: #ffffff !important;
-    text-decoration: none !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-    transition: all 0.3s ease;
+.btn-clean-outline:hover {
+  background: var(--olive-dark) !important;
+  color: #ffffff !important;
 }
 
-.btn-location-card:hover {
-    background-color: var(--canva-brown-hover, #967b6b);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-    color: #ffffff !important;
+/* ==========================================
+   9. PROFIL PASANGAN
+========================================== */
+.arch-photo-wrapper {
+  width: 250px;
+  height: 350px;
+  border-top-left-radius: 125px;
+  border-top-right-radius: 125px;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+  background-color: #f0ece1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-location-icon i {
-    font-size: 0.95rem;
-    color: #ffffff;
+.groom-photo,
+.bride-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  object-position: center top !important;
 }
 
-.btn-location-title {
-    font-family: 'The Seasons', 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 1px;
+.groom-fullname,
+.bride-fullname {
+  font-family: 'Amoresa', cursive;
+  font-size: 2rem;
+  color: var(--olive-dark);
+  margin-top: 2px;
 }
 
-/* BUNGA POJOK KIRI & KANAN BAWAH (bunga5.jpg) */
-.flower-bottom-corners {
-    position: absolute;
-    bottom: -10px !important;
+.parents-label,
+.parents-labeld {
+  font-size: 0.85rem;
+  color: var(--olive-dark);
+  font-weight: 700;
+}
+
+.parents-names {
+  font-size: 0.85rem;
+  color: var(--olive-dark);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* ==========================================
+   10. STRIP FOTO MUTER SMOOTH
+========================================== */
+.photo-strip-container {
+  width: 100% !important;
+  margin: 0 !important;
+  height: 175px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  z-index: 8 !important;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+.photo-strip-track {
+  display: flex !important;
+  gap: 10px !important;
+  width: max-content !important;
+  will-change: transform;
+}
+
+.photo-strip-track img {
+  width: 125px !important;
+  height: 175px !important;
+  object-fit: cover !important;
+  border-radius: 10px !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14) !important;
+}
+
+.track-left {
+  animation: scrollLeft 25s linear infinite;
+}
+
+.track-right {
+  animation: scrollRight 25s linear infinite;
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ==========================================
+   11. HERO & TIMER (100% MATCH ACUAN 3_5.JPG)
+========================================== */
+.scroll-target-block.content-block {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.text-subtitle {
+  font-size: 0.95rem;
+  color: var(--olive-dark);
+  font-weight: 500;
+  letter-spacing: 1.5px;
+}
+
+.couple-name {
+  font-family: 'Amoresa', cursive !important;
+  font-size: 3.1rem !important;
+  color: #585d46 !important;
+  font-weight: 570 !important;
+  line-height: 1 !important;
+  margin-bottom: 12px !important;
+  white-space: nowrap !important;
+  -webkit-text-stroke: 0px transparent !important;
+  text-shadow: 0px 1.5px 0px rgba(58, 62, 46, 0.45) !important;
+}
+
+/* FOTO HERO EDGE-TO-EDGE (FULL LEBAR TANPA SUDUT MELENGKUNG) */
+.photo-hero-wrapper {
+  width: 100% !important;
+  padding: 0 !important;
+  margin-top: 15px !important;
+  margin-bottom: 25px !important;
+}
+
+.photo-hero {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 360px !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ORNAMEN BUNGA PRESISI (SESUAI 3_5.JPG) */
+.flower-hero-top,
+.hero-flower-top {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 140px !important;
+  max-width: 35vw !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  transform: scale(-1, -1) rotate(10deg) !important;
+  transform-origin: top left !important;
+}
+
+.flower-hero-bottom,
+.hero-flower-bottom {
+  position: absolute !important;
+  bottom: -20px !important;
+  right: -10px !important;
+  width: 180px !important;
+  max-width: 42vw !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  transform: rotate(-5deg) !important;
+  transform-origin: bottom right !important;
+}
+
+.luxury-timer-wrapper {
+  position: relative !important;
+  z-index: 12 !important;
+}
+
+.countdown-title {
+  font-size: 0.8rem;
+  color: var(--olive-dark);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.countdown-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.flip-card {
+  background-color: var(--timer-bg);
+  color: var(--timer-text);
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 6px 9px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.unit-label {
+  font-size: 0.65rem;
+  color: #555;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.colon {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--olive-dark);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.btn-olive-pill {
+  background-color: var(--canva-brown);
+  color: #fff !important;
+  font-family: 'The Seasons', serif;
+  padding: 9px 32px;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(142, 119, 102, 0.3);
+}
+
+.bible-title {
+  font-family: 'Amoresa', cursive;
+  font-size: 2.8rem;
+  color: var(--olive-dark);
+}
+
+.bible-text {
+  font-size: 0.92rem;
+  color: var(--olive-dark);
+  line-height: 1.6;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ==========================================
+   12. GALERI 15 FOTO
+========================================== */
+.gallery-title,
+.gift-title {
+  font-family: 'Amoresa', cursive;
+  font-size: 3rem;
+  color: var(--olive-dark);
+}
+
+.gallery-grid-3x5 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 380px;
+  width: 100%;
+}
+
+.gallery-item {
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  position: relative;
+  background-color: #eee;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.08);
+}
+
+/* ==========================================
+   13. WEDDING GIFT (SOLID / TIDAK TRANSPARAN)
+========================================== */
+.gift-clean-card {
+  position: relative;
+  z-index: 10;
+  background: #eae6df !important;
+  border-radius: 24px;
+  margin: 24px 14px;
+  padding: 32px 20px 24px 20px;
+  border: 1px solid rgba(47, 54, 37, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.gift-icon {
+  font-size: 2.2rem;
+  color: var(--olive-dark);
+}
+
+.atm-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 310px;
+}
+
+.atm-box {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(47, 54, 37, 0.15);
+}
+
+.clickable-card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden !important;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.clickable-card:active {
+  transform: scale(0.97);
+}
+
+.atm-img {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+}
+
+.card-copy-badge {
+  position: absolute;
+  bottom: 1px;
+  right: 8px;
+  background: rgba(47, 54, 37, 0.88);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 5;
+  transition: background 0.3s ease;
+}
+
+.clickable-card:hover .card-copy-badge {
+  background: var(--olive-dark);
+}
+
+.popout-copy-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(47, 54, 37, 0.95);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.popout-copy-badge.show-popout {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.gift-footer-text {
+  font-size: 1.24rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* ==========================================
+   14. BUNGA MELEBUR SEAMLESS
+========================================== */
+.flower-bg-elem {
+  position: absolute !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.05));
+}
+
+.flower-top-left {
+  top: -10px;
+  left: -10px;
+  width: 440px;
+}
+
+.flower-middle-right {
+  right: -10px;
+  top: 22%;
+  width: 420px;
+}
+
+.flower-bottom-banner {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.gift-flower-frame {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
+
+/* ==========================================
+   15. UCAPAN & DOA (SOLID / TIDAK TRANSPARAN)
+========================================== */
+.wishes-clean-card {
+  position: relative;
+  z-index: 10;
+  background: #eae6df !important;
+  border-radius: 28px;
+  margin: 24px 14px;
+  padding: 32px 20px 24px 20px;
+  border: 1px solid rgba(47, 54, 37, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.wishes-icon-badge {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 236, 225, 0.8));
+  color: var(--olive-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  border: 1px solid rgba(47, 54, 37, 0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.wishes-title {
+  font-family: 'Amoresa', cursive;
+  font-size: 3.2rem;
+  color: var(--olive-dark);
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.form-label-custom {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--olive-dark);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.form-control-custom {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px solid rgba(47, 54, 37, 0.15);
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-size: 0.85rem;
+  color: var(--olive-dark);
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.form-control-custom:focus {
+  background: #ffffff !important;
+  border-color: var(--olive-dark);
+  box-shadow: 0 0 0 4px rgba(47, 54, 37, 0.12), inset 0 2px 4px rgba(0, 0, 0, 0.01);
+}
+
+.btn-submit-wish {
+  background: linear-gradient(135deg, var(--olive-dark) 0%, #3e4732 100%);
+  color: #ffffff !important;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 13px;
+  border-radius: 50px;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(47, 54, 37, 0.25);
+  cursor: pointer;
+}
+
+.btn-submit-wish:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(47, 54, 37, 0.35);
+  background: linear-gradient(135deg, var(--canva-brown) 0%, #7a6555 100%);
+}
+
+.btn-submit-wish:active {
+  transform: translateY(0);
+}
+
+.wish-count-badge {
+  display: flex;
+  justify-content: center;
+}
+
+.badge-pill {
+  background: rgba(47, 54, 37, 0.08);
+  color: var(--olive-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(47, 54, 37, 0.15);
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.wishes-feed-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(247, 244, 238, 0.95) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(142, 119, 102, 0.2);
+  border-radius: 18px;
+  padding: 12px 16px 10px 16px;
+  box-shadow: 0 6px 18px rgba(47, 54, 37, 0.05);
+}
+
+.feed-title-script {
+  font-family: 'Amoresa', cursive;
+  font-size: 2.2rem;
+  color: var(--olive-dark);
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.gold-line {
+  display: inline-block;
+  width: 25px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(47, 54, 37, 0.1), var(--olive-dark));
+}
+
+.gold-line.right-line {
+  background: linear-gradient(90deg, var(--olive-dark), rgba(47, 54, 37, 0.1));
+}
+
+.wishes-list-container {
+  max-height: 260px;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  padding: 8px 6px 8px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wishes-list-container::-webkit-scrollbar {
+  width: 4px;
+}
+.wishes-list-container::-webkit-scrollbar-track {
+  background: rgba(47, 54, 37, 0.05);
+  border-radius: 10px;
+}
+.wishes-list-container::-webkit-scrollbar-thumb {
+  background: var(--olive-sage);
+  border-radius: 10px;
+}
+
+.wish-item-card {
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  background: #ffffff !important;
+  border-radius: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(47, 54, 37, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.wish-item-card:hover {
+  transform: translateY(-2px);
+}
+
+.wish-item-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--olive-dark), var(--olive-sage));
+}
+
+.wish-author-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--olive-dark);
+}
+
+.wish-text {
+  font-size: 0.82rem;
+  color: #333;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.wish-time {
+  font-size: 0.7rem;
+  color: #888;
+  font-weight: 500;
+}
+
+/* ==========================================
+   ANIMASI POP-OUT & SPRING 3D SUPER MEWAH
+========================================== */
+.scroll-target-block {
+  perspective: 1000px;
+}
+
+.reveal-element {
+  opacity: 0 !important;
+  transform: translateY(45px) scale(0.85) rotateX(15deg);
+  transition: 
+    opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.8s ease !important;
+  filter: blur(6px);
+  will-change: transform, opacity, filter;
+}
+
+.reveal-element.active-pop {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) rotateX(0deg) !important;
+  filter: blur(0px) !important;
+}
+
+/* ==========================================
+   16. FLOATING MUSIC CONTROL BUTTON
+========================================== */
+.music-toggle-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 999;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(47, 54, 37, 0.85);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease;
+}
+
+.music-toggle-btn:hover {
+  transform: scale(1.1);
+  background: var(--olive-dark);
+}
+
+.music-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.music-icon-spin {
+  font-size: 1.5rem;
+  animation: spinRecord 4s linear infinite;
+  display: block;
+}
+
+.music-toggle-btn.paused .music-icon-spin {
+  animation-play-state: paused;
+  opacity: 0.5;
+}
+
+.music-icon-state {
+  position: absolute;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.music-toggle-btn.paused .music-icon-state::before {
+  content: "\F4F4";
+}
+
+.music-toggle-btn:not(.paused) .music-icon-state::before {
+  content: "\F4C3";
+}
+
+@keyframes spinRecord {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 576px) {
+
+  html,
+  body {
+    width: 100vw !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: var(--bg-canvas) !important;
+  }
+
+  .main-wrapper,
+  .cover-wrapper {
+    position: fixed !important;
+    top: 0 !important;
     left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+    background-color: var(--bg-canvas) !important;
+  }
+
+  .card-canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 100vw !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  .scroll-container,
+  .content-container {
     width: 100% !important;
-    height: auto !important;
-    z-index: 2;
-    pointer-events: none;
-    
+    height: 100% !important;
+  }
+
+  /* ==========================================
+     🔒 TYPOGRAPHY LOCK & RESPONSIF BUNGA HP
+  ========================================== */
+
+  .text-subtitle {
+    font-size: 0.95rem !important;
+    letter-spacing: 1.5px !important;
+    font-weight: 500 !important;
+  }
+
+  .couple-name {
+    font-family: 'Amoresa', cursive !important;
+    font-size: 2.3rem !important;
+    font-weight: 570 !important;
+    line-height: 1 !important;
+    color: #585d46 !important;
+    margin-bottom: 12px !important;
+    white-space: nowrap !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: 0 1.5px 0 rgba(58, 62, 46, 0.45) !important;
+  }
+
+  .countdown-title {
+    font-size: 0.8rem !important;
+    letter-spacing: 2px !important;
+    font-weight: 600 !important;
+  }
+
+  .flip-card {
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+  }
+
+  .unit-label {
+    font-size: 0.65rem !important;
+    font-weight: 600 !important;
+  }
+
+  .colon {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+  }
+
+  .btn-olive-pill {
+    font-family: 'The Seasons', serif !important;
+    font-size: 1.1rem !important;
+    padding: 9px 32px !important;
+  }
+
+  /* KUNCI UKURAN BUNGA KHUSUS DI HP (BEBAS MATI DARI OVERLAP TIMER) */
+  .flower-hero-top,
+  .hero-flower-top {
+    width: 110px !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  .flower-hero-bottom,
+  .hero-flower-bottom {
+    width: 145px !important;
+    bottom: -15px !important;
+    right: -5px !important;
+  }
+
+  /* ==========================================
+     🔒 JUDUL SECTION LAINNYA JUGA LOCK
+  ========================================== */
+
+  .bible-title {
+    font-size: 2.8rem !important;
+  }
+
+  .gallery-title,
+  .gift-title {
+    font-size: 3rem !important;
+  }
+
+  .wishes-title {
+    font-size: 3.2rem !important;
+  }
+
+  .feed-title-script {
+    font-size: 1.6rem !important;
+  }
+
+  .groom-fullname,
+  .bride-fullname {
+    font-size: 2rem !important;
+  }
+
+  /* FOTO RESPONSIVE SELEBAR LAYAR HP */
+  .photo-hero {
+    max-height: 280px !important;
+  }
+
+  /* MUSIC */
+  .music-toggle-btn {
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 9999 !important;
+  }
+}
+
+/* ==========================================
+   PERBAIKAN PRESISI BUNGA KIRI BAWAH & KANAN BAWAH
+========================================== */
+
+/* Mengunci acuan posisi bunga di kartu canvas utama */
+.card-canvas,
+.scroll-target-block[data-bg="bg1"] {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* 1. BUNGA KIRI BAWAH (CERMIN DARI BUNGA KANAN BAWAH) */
+.hero-flower-bottom-left {
+  position: absolute !important;
+  bottom: -20px !important;
+  top: auto !important;
+  left: -40px !important;
+  right: auto !important;
+  width: 155px !important;
+  max-width: 38vw !important;
+  height: auto !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  
+  /* transform-origin: center menjaga bunga tetap di dalam area kanvas saat dicermin */
+  transform: scaleX(-1) rotate(8deg) !important;
+  transform-origin: center !important;
+}
+
+/* 2. BUNGA KANAN BAWAH */
+.hero-flower-bottom-right {
+  position: absolute !important;
+  bottom: -20px !important;
+  top: auto !important;
+  right: -40px !important;
+  left: auto !important;
+  width: 155px !important;
+  max-width: 38vw !important;
+  height: auto !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  transform: rotate(8deg) !important;
+  transform-origin: center !important;
+}
+
+/* 3. MENJAGA TEKS & TIMER SELALU DI ATAS LAPISAN BUNGA */
+.hero-header-box,
+.luxury-timer-wrapper {
+  position: relative !important;
+  z-index: 15 !important;
+}
+
+/* 4. RESPONSIF TAMPILAN HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .hero-flower-bottom-left {
+    bottom: -20px !important;
+    top: auto !important;
+    left: -40px !important;
+    width: 155px !important;
+    max-width: 45vw !important;
+  }
+
+  .hero-flower-bottom-right {
+    bottom: -20px !important;
+    top: auto !important;
+    right: -40px !important;
+    width: 155px !important;
+    max-width: 45vw !important;
+  }
+}
+
+/* ==========================================
+   PERBAIKAN PRESISI BUNGA 47 (MATIUS 19:6)
+========================================== */
+
+/* Memastikan kartu ayat tidak memotong bunga yang menempel di luar bingkai */
+.verse-clean-card {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* 1. BUNGA 47 KIRI */
+.verse-flower-left {
+  position: absolute !important;
+  top: 5% !important;
+  left: -85px !important;      /* Dibuat sedikit keluar kartu sesuai gambar 4.jpg */
+  width: 170px !important;
+  max-width: 28vw !important;
+  height: auto !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  
+  /* Diputar agar bunga mekar ke arah teks ayat */
+  transform: translateY(-50%) rotate(55deg) !important;
+  transform-origin: center !important;
+}
+
+/* 2. BUNGA 47 KANAN */
+.verse-flower-right {
+  position: absolute !important;
+  /* top: 20% !important; */
+  top: 90% !important;
+  right: -95px !important;     /* Dibuat sedikit keluar kartu sesuai gambar 4.jpg */
+  width: 170px !important;
+  max-width: 28vw !important;
+  height: auto !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  
+  /* Cermin horizontal dan diputar simetris */
+  /* transform: translateY(-50%) scaleX(-1) rotate(80deg) !important; */
+  transform: translateY(-50%) scaleX(-1) rotate(10deg) !important;
+  transform-origin: center !important;
+}
+
+/* 3. ATURAN RESPONSIF LAYAR HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .verse-flower-left {
+    top: 8% !important;
+    left: -80px !important;
+    width: 170px !important;
+    max-width: 45vw !important;
+  }
+
+  .verse-flower-right {
+    top: 85% !important;
+    right: -95px !important;
+    width: 170px !important;
+    max-width: 45vw !important;
+  }
+}
+
+/* ==========================================
+   PENATAN BINGKAI ARCH & BUNGA 48 STEPHEN
+========================================== */
+
+/* 1. WADAH BINGKAI LENGKUNG FOTO (ARCH WINDOW) */
+.couple-profile-card .arch-photo-wrapper {
+  position: relative !important;
+  width: 280px !important;
+  height: 380px !important;
+  border-top-left-radius: 140px !important;
+  border-top-right-radius: 140px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  overflow: visible !important; /* Mencegah bunga 48 terpotong di luar bingkai */
+  border: 4px solid #ffffff !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+  background-color: #f0ece1;
+  margin-top: 20px !important;
+}
+
+/* FOTO STEPHEN DI DALAM BINGKAI */
+.groom-photo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center 80% !important;
+  border-top-left-radius: 136px !important;
+  border-top-right-radius: 136px !important;
+}
+
+/* 2. ORNAMEN BUNGA 48 POJOK KIRI ATAS BINGKAI */
+.arch-flower-top-left {
+  position: absolute !important;
+  top: -100px !important;        /* Disesuaikan agar bunga menempel pas di lengkungan */
+  left: -160px !important;       /* Disesuaikan agar tidak terlalu jauh terlempar ke kiri */
+  width: 270px !important;
+  max-width: 42vw !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+
+  /* UBAH TRANSFORM ORIGIN MENJADI CENTER */
+  transform: rotate(10deg) !important;  /* Bebas atur sudut (misal: -10deg, -25deg, atau 15deg) */
+  transform-origin: center !important;  /* KUNCI: Titik poros putar tepat di tengah gambar */
+
+  
+  
+}
+
+/* 3. RESPONSIF LAYAR HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .couple-profile-card .arch-photo-wrapper {
+    width: 240px !important;
+    height: 330px !important;
+    border-top-left-radius: 120px !important;
+    border-top-right-radius: 120px !important;
+  }
+
+  .groom-photo {
+    border-top-left-radius: 116px !important;
+    border-top-right-radius: 116px !important;
+  }
+
+  .arch-flower-top-left {
+    top: -35px !important;
+    left: -42px !important;
+    width: 125px !important;
+  }
+}
+
+/* ==========================================
+   PENATAN PROFIL DESSY (BUNGA 49 & BUNGA 50)
+========================================== */
+
+/* 1. BINGKAI FOTO LENGKUNG DESSY */
+.bride-arch-wrapper {
+  position: relative !important;
+  width: 320px !important;
+  height: 440px !important;
+  border-top-left-radius: 160px !important;
+  border-top-right-radius: 160px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  overflow: hidden !important;
+  border: 4px solid #ffffff !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+  background-color: #f0ece1;
+  margin-top: 20px !important;
+}
+
+.bride-photo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  border-top-left-radius: 156px !important;
+  border-top-right-radius: 156px !important;
+}
+
+/* 2. BURUNG MERPATI (bunga49.png) POJOK KIRI ATAS */
+.bride-birds-top-left {
+  position: absolute !important;
+  top: 33px !important;
+  left: 35px !important;
+  width: 130px !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  opacity: 0.85 !important;
+  transform: rotate(0deg) !important;
+}
+
+/* 3. BANNER BUNGA (bunga50.png) DI BAWAH KARTU */
+.bride-flower-bottom {
+  position: absolute !important;
+  bottom: -178px !important;
+  left: 220px !important;
+  transform: translateX(-50%) !important;
+  width: 135% !important;
+  max-width: 890px !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12)) !important;
+}
+
+/* 4. RESPONSIF LAYAR HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .bride-arch-wrapper {
+    width: 280px !important;
+    height: 390px !important;
+    border-top-left-radius: 140px !important;
+    border-top-right-radius: 140px !important;
+  }
+
+  .bride-photo {
+    border-top-left-radius: 136px !important;
+    border-top-right-radius: 136px !important;
+  }
+
+  .bride-birds-top-left {
+    top: -10px !important;
+    left: -15px !important;
+    width: 90px !important;
+  }
+
+  .bride-flower-bottom {
+    bottom: -28px !important;
+    width: 115% !important;
+  }
+}
+
+/* MEMBERI JEDA KOSONG DI ATAS PEMBERKATAN */
+.jeda-event {
+  margin-top: 190px !important; /* Nilai jeda turun yang diinginkan */
+}
+
+@media screen and (max-width: 576px) {
+  .jeda-event {
+    margin-top: 140px !important;
+  }
+}
+
+/* ==========================================
+   POSISI PRESI BUNGA 51 (CENTERED IN CORNER)
+========================================== */
+.event-pemberkatan-card {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* 1. BUNGA POJOK KIRI BAWAH */
+.pemberkatan-flower-left {
+  position: absolute !important;
+  bottom: -170px !important;       /* Disesuaikan agar pusat bunga pas di pojok */
+  left: -110px !important;        /* Disesuaikan agar tidak terlalu terlempar */
+  width: 200px !important;
+  max-width: 52vw !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  
+  /* PUSAT DIPUTAR BERDASARKAN TITIK TENGAH (CENTER) */
+  transform: rotate(1deg) !important;
+  transform-origin: center !important;
+  
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15)) !important;
+  image-rendering: -webkit-optimize-contrast !important;
+}
+
+/* 2. BUNGA POJOK KANAN BAWAH */
+.pemberkatan-flower-right {
+  position: absolute !important;
+  bottom: -170px !important;       /* Disesuaikan simetris dengan kiri */
+  right: -110px !important;       /* Disesuaikan simetris dengan kiri */
+  width: 200px !important;
+  max-width: 52vw !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  
+  /* DICERMIN HORIZONAL & PUSAT PUTAR DI TENGAH (CENTER) */
+  transform: scaleX(-1) rotate(1deg) !important;
+  transform-origin: center !important;
+  
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15)) !important;
+  image-rendering: -webkit-optimize-contrast !important;
+}
+
+/* 3. RESPONSIF KHUSUS HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .pemberkatan-flower-left {
+    bottom: -35px !important;
+    left: -50px !important;
+    width: 180px !important;
+  }
+
+  .pemberkatan-flower-right {
+    bottom: -35px !important;
+    right: -50px !important;
+    width: 180px !important;
+  }
+}
+
+/* ==========================================
+   MENURUNKAN SATU KOTAK OUR GALLERY
+========================================== */
+
+/* Menurunkan seluruh kotak kartu galeri beserta isinya */
+.gallery-clean-card {
+  margin-top: 90px !important; /* Naikkan angka ini (misal 180px) jika mau lebih turun lagi */
+  position: relative !important;
+}
+
+/* RESPONSIF KHUSUS HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .gallery-clean-card {
+    margin-top: 100px !important; /* Jarak turun kotak galeri khusus layar HP */
+  }
+}
+
+/* ==========================================
+   PENATAN BUNGA GALLERY (SESUAI UNDANGAN PERNIKAHAN 9.JPG)
+========================================== */
+
+/* 1. MENCEGAH BUNGA TERPOTONG DI LUAR BINGKAI GALLERY */
+.gallery-clean-card {
+  position: relative !important;
+  overflow: visible !important;
+  padding-bottom: 50px !important;
+}
+
+/* 2. ORNAMEN BUNGA MEMBINGKAI DI BAWAH KARTU GALLERY */
+.gallery-flower-bottom {
+  position: absolute !important;
+  bottom: -200px !important;
+  left: -490px !important;
+  width: 170% !important;
+  max-width: 900px !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12)) !important;
+}
+
+/* 3. RESPONSIF LAYAR HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .gallery-flower-bottom {
+    bottom: -25px !important;
+    width: 115% !important;
+  }
+}
+
+/* ==========================================
+   MENURUNKAN SATU KOTAK WEDDING GIFT
+========================================== */
+
+/* Menurunkan seluruh kotak kartu Wedding Gift */
+.gift-clean-card {
+  margin-top: 160px !important; /* Ubah angka ini (misal 160px atau 180px) jika mau lebih turun lagi */
+  position: relative !important;
+}
+
+/* RESPONSIF KHUSUS HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .gift-clean-card {
+    margin-top: 100px !important; /* Jarak turun khusus di layar HP */
+  }
+} 
+
+/* ==========================================
+   PENATAN BUNGA BARU WEDDING GIFT (54 & 55)
+========================================== */
+
+.gift-clean-card {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* 1. BUNGA KIRI KARTU (bunga55.png - CORNER) */
+.gift-flower-left-new {
+  position: absolute !important;
+  top: 238px !important;
+  left: -65px !important;
+  width: 240px !important;
+  max-width: 42vw !important;
+  height: auto !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  transform: translateY(-50%) rotate(0deg) !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12)) !important;
+  image-rendering: -webkit-optimize-contrast !important;
+}
+
+/* 2. BUNGA POJOK KANAN BAWAH (bunga54.png - VERTIKAL) */
+.gift-flower-right-new {
+  position: absolute !important;
+  bottom: -60px !important;
+  right: -90px !important;
+  width: 165px !important;
+  max-width: 40vw !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  transform: rotate(-5deg) !important;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.14)) !important;
+  image-rendering: -webkit-optimize-contrast !important;
+}
+
+/* 3. RESPONSIF LAYAR HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .gift-flower-left-new {
+    top: 42% !important;
+    left: -48px !important;
+    width: 130px !important;
+  }
+
+  .gift-flower-right-new {
+    bottom: -45px !important;
+    right: -42px !important;
+    width: 125px !important;
+  }
+}
+
+/* ==========================================
+   PENATAN BUNGA UCAPAN BARU (56 & 57)
+========================================== */
+
+.wishes-clean-card {
+  position: relative !important;
+  overflow: visible !important;
+  padding-bottom: 50px !important;
+}
+
+/* 1. BUNGA POJOK KANAN ATAS (bunga57.png) */
+.wishes-flower-top-right {
+  position: absolute !important;
+  top: -35px !important;
+  right: -45px !important;
+  width: 175px !important;
+  max-width: 45vw !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12)) !important;
+  image-rendering: -webkit-optimize-contrast !important;
+}
+
+/* 2. BANNER BUNGA HORIZONTAL BAWAH (bunga56.png) */
+.wishes-flower-bottom {
+  position: absolute !important;
+  bottom: -170px !important;
+  left: 230px !important;
+  transform: translateX(-50%) !important;
+  width: 590px !important;
+  max-width: 48vw !important;
+  height: auto !important;
+  z-index: 25 !important;
+  pointer-events: none !important;
+  image-rendering: -webkit-optimize-contrast !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.14)) !important;
+}
+
+/* 3. RESPONSIF LAYAR HP (MOBILE) */
+@media screen and (max-width: 576px) {
+  .wishes-flower-top-right {
+    top: -25px !important;
+    right: -32px !important;
+    width: 140px !important;
+  }
+
+  .wishes-flower-bottom {
+    bottom: -30px !important;
+    width: 118% !important;
+  }
 }

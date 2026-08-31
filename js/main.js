@@ -1,30 +1,21 @@
+// ==========================================
+// 1. CONFIG & INITIALIZE SUPABASE
+// ==========================================
+const SUPABASE_URL = 'https://lrwoorxthpgvlgisolli.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd29vcnh0aHBndmxnaXNvbGxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NDU3ODMsImV4cCI6MjEwMzIyMTc4M30.s_dZQN1xuHkyjYeFrHvN7dGk6P1vZdpGAAhEytaULRg';
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ==========================================
+// 2. DOM CONTENT LOADED (MAIN INIT & ANIMATIONS)
+// ==========================================
 document.addEventListener("DOMContentLoaded", function () {
 
-    // 1. AUTO FIT CARD SCALE
-    function autoFitCard() {
-        const card = document.querySelector('.card-canvas');
-        if (!card) return;
+    // 1. SET BACKGROUND PERTAMA AKTIF
+    const firstBg = document.getElementById('bg1');
+    if (firstBg) firstBg.classList.add('active');
 
-        const originalWidth = 480;
-        const originalHeight = 750;
-        const paddingMargin = 20;
-
-        const availableWidth = window.innerWidth - paddingMargin;
-        const availableHeight = window.innerHeight - paddingMargin;
-
-        const scaleX = availableWidth / originalWidth;
-        const scaleY = availableHeight / originalHeight;
-        
-        let scale = Math.min(scaleX, scaleY);
-        if (scale > 1) scale = 1;
-
-        card.style.transform = `scale(${scale})`;
-    }
-
-    autoFitCard();
-    window.addEventListener('resize', autoFitCard);
-
-    // 2. COUNTDOWN TIMER ACARA
+    // 2. COUNTDOWN TIMER ACARA (17 OKTOBER 2026)
     const targetDate = new Date("October 17, 2026 08:00:00").getTime();
 
     function updateCountdown() {
@@ -37,285 +28,327 @@ document.addEventListener("DOMContentLoaded", function () {
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            const dEl = document.getElementById("days");
-            const hEl = document.getElementById("hours");
-            const mEl = document.getElementById("minutes");
-            const sEl = document.getElementById("seconds");
-
-            if (dEl) dEl.innerText = days < 10 ? "0" + days : days;
-            if (hEl) hEl.innerText = hours < 10 ? "0" + hours : hours;
-            if (mEl) mEl.innerText = minutes < 10 ? "0" + minutes : minutes;
-            if (sEl) sEl.innerText = seconds < 10 ? "0" + seconds : seconds;
+            if (document.getElementById("days")) document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            if (document.getElementById("hours")) document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            if (document.getElementById("minutes")) document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            if (document.getElementById("seconds")) document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }
     }
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // 3. SLIDESHOW CAROUSEL
-    const weddingCarousel = document.querySelector('#weddingCarousel');
-    if (weddingCarousel && typeof bootstrap !== 'undefined') {
-        new bootstrap.Carousel(weddingCarousel, {
-            interval: 2000,
-            ride: 'carousel',
-            pause: false
-        });
-    }
+    // 3. ANIMASI POP-OUT 3D & STAGGERED REVEAL
+    const scrollContainer = document.getElementById('scrollContainer');
+    const scrollTargetBlocks = document.querySelectorAll('.scroll-target-block');
+    const bgSlides = document.querySelectorAll('.bg-slide');
 
-    // ANIMASI STRIP FOTO PAGE 2 (MATIUS 19:6 - MUTER SEAMLESS TANPA GAP)
-    const trackTop = document.getElementById('trackTop');
-    const trackBottom = document.getElementById('trackBottom');
-
-    if (trackTop) {
-        // Track Atas: Muter mulus terus ke KANAN
-        trackTop.animate([
-            { transform: 'translateX(-33.333%)' },
-            { transform: 'translateX(0%)' }
-        ], {
-            duration: 18000,
-            easing: 'linear',
-            iterations: Infinity
-        });
-    }
-
-    if (trackBottom) {
-        // Track Bawah: Muter mulus terus ke KIRI
-        trackBottom.animate([
-            { transform: 'translateX(0%)' },
-            { transform: 'translateX(-33.333%)' }
-        ], {
-            duration: 18000,
-            easing: 'linear',
-            iterations: Infinity
-        });
-    }
-
-    // 5. ANIMASI BUNGA PAGE 3 (KIRI ATAS - GOYANG SEAMLESS)
-    const pageGroom = document.querySelector('#pageGroom');
-    const groomFlower = document.querySelector('.flower-top-left');
-
-    if (pageGroom && groomFlower) {
-        let hasAnimated = false;
-
-        // Poros kuncian di POJOK KIRI ATAS
-        groomFlower.style.transformOrigin = 'top left';
-        groomFlower.style.opacity = '0';
-        groomFlower.style.transform = 'translate(-40px, -40px)';
-
-        const observer = new IntersectionObserver((entries) => {
+    if (scrollContainer && scrollTargetBlocks.length > 0) {
+        
+        // A. Observer Transisi Latar Belakang Cross-Fade
+        const bgObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && !hasAnimated) {
-                    hasAnimated = true;
-
-                    // ANIMASI 1: Bunga Masuk dari Kiri Atas
-                    const enterAnimation = groomFlower.animate([
-                        { opacity: 0, transform: 'translate(-40px, -40px) rotate(0deg)' },
-                        { opacity: 1, transform: 'translate(0, 0) rotate(0deg)' }
-                    ], {
-                        duration: 1200,
-                        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                        fill: 'forwards'
-                    });
-
-                    // ANIMASI 2: Gerakan Bergoyang Halus dari Poros Kiri Atas
-                    enterAnimation.onfinish = () => {
-                        groomFlower.animate([
-                            { transform: 'rotate(0deg)', offset: 0 },
-                            { transform: 'rotate(2.2deg)', offset: 0.25 }, /* Meliuk ke kanan */
-                            { transform: 'rotate(0deg)', offset: 0.50 },
-                            { transform: 'rotate(-1.8deg)', offset: 0.75 }, /* Meliuk ke kiri */
-                            { transform: 'rotate(0deg)', offset: 1.0 }
-                        ], {
-                            duration: 5000,
-                            easing: 'linear',
-                            iterations: Infinity
+                if (entry.isIntersecting) {
+                    const bgId = entry.target.getAttribute('data-bg');
+                    if (bgId) {
+                        bgSlides.forEach(slide => {
+                            if (slide.id === bgId) {
+                                slide.classList.add('active');
+                            } else {
+                                slide.classList.remove('active');
+                            }
                         });
-                    };
+                    }
+                }
+            });
+        }, { root: scrollContainer, threshold: 0.25 });
+
+        scrollTargetBlocks.forEach(block => bgObserver.observe(block));
+
+        // B. Observer Kemunculan Pop-Out Tulisan & Kartu Berurutan
+        const contentObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const revealElements = entry.target.querySelectorAll('.reveal-element');
+
+                if (entry.isIntersecting) {
+                    revealElements.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.classList.add('active-pop');
+                        }, index * 120); 
+                    });
+                } else {
+                    revealElements.forEach(el => {
+                        el.classList.remove('active-pop');
+                    });
                 }
             });
         }, {
-            threshold: 0.3
+            root: scrollContainer,
+            threshold: 0.12,
+            rootMargin: "0px 0px -40px 0px"
         });
 
-        observer.observe(pageGroom);
+        scrollTargetBlocks.forEach(block => contentObserver.observe(block));
+
+        // C. Dynamic Scroll Micro Parallax (HANYA AKTIF DI LAYAR BESAR)
+        scrollContainer.addEventListener('scroll', () => {
+            if (window.innerWidth <= 576) return; // Mencegah bentrokan layout di HP
+            
+            const scrollTop = scrollContainer.scrollTop;
+            const activeElements = document.querySelectorAll('.reveal-element.active-pop');
+            
+            activeElements.forEach((el, idx) => {
+                const speed = (idx % 2 === 0) ? 0.02 : -0.015;
+                el.style.transform = `translateY(${scrollTop * speed}px) scale(1) rotateX(0deg)`;
+            });
+        }, { passive: true });
     }
 
-    // 5. ANIMASI BUNGA BAWAH PAGE 4 (DESSY: DIPERBESAR scale(1.35) & GOYANG HALUS)
-        const pageBride = document.querySelector('#pageBride');
-        const brideFlower = document.querySelector('#brideFlower');
+    // 4. LOAD DAFTAR UCAPAN DARI SUPABASE
+    fetchWishes();
 
-        if (pageBride && brideFlower) {
-            let hasAnimatedBride = false;
-
-            // Kunci pangkal bawah mati di dasar
-            brideFlower.style.transformOrigin = 'bottom center';
-            brideFlower.style.opacity = '0';
-            brideFlower.style.transform = 'translateY(25px) scale(1.35) rotate(0deg)';
-
-            const observerBride = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !hasAnimatedBride) {
-                        hasAnimatedBride = true;
-
-                        // 1. ANIMASI MASUK: Bunga naik dari dasar sambil membesar scale(1.35)
-                        const enterAnimation = brideFlower.animate([
-                            { opacity: 0, transform: 'translateY(25px) scale(1.35) rotate(0deg)' },
-                            { opacity: 1, transform: 'translateY(0px) scale(1.35) rotate(0deg)' }
-                        ], {
-                            duration: 1200,
-                            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                            fill: 'forwards'
-                        });
-
-                        // 2. ANIMASI LOOP: Ayunan lembut kiri-kanan tetap dalam ukuran scale(1.35)
-                        enterAnimation.onfinish = () => {
-                            brideFlower.animate([
-                                { transform: 'scale(1.35) rotate(0deg)', offset: 0 },
-                                { transform: 'scale(1.35) rotate(-1.2deg)', offset: 0.25 }, /* Liuk tipis ke kiri */
-                                { transform: 'scale(1.35) rotate(0deg)', offset: 0.50 },
-                                { transform: 'scale(1.35) rotate(1.2deg)', offset: 0.75 },  /* Liuk tipis ke kanan */
-                                { transform: 'scale(1.35) rotate(0deg)', offset: 1.0 }
-                            ], {
-                                duration: 5500,       /* Ayunan sangat lembut */
-                                easing: 'linear',
-                                iterations: Infinity
-                            });
-                        };
-                    }
-                });
-            }, {
-                threshold: 0.3
-            });
-
-            observerBride.observe(pageBride);
-        }
-        // 7. SMOOTH WHEEL SCROLL ENHANCER (MENGHALUSKAN TRANSISI ANTAR HALAMAN)
-        const scrollContainer = document.querySelector('.scroll-container');
-        if (scrollContainer) {
-            let isScrolling = false;
-
-            scrollContainer.addEventListener('wheel', function(e) {
-                // Mencegah benturan event scroll default yang patah-patah
-                if (isScrolling) return;
-
-                const pageHeight = 750; // Tinggi pasti per halaman
-                const currentScroll = scrollContainer.scrollTop;
-                
-                // Tentukan arah scroll (ke bawah atau ke atas)
-                if (e.deltaY > 0 && currentScroll % pageHeight < 50) {
-                    // Scroll ke halaman berikutnya dengan halus
-                    isScrolling = true;
-                    scrollContainer.scrollBy({
-                        top: pageHeight,
-                        behavior: 'smooth'
-                    });
-                    setTimeout(() => { isScrolling = false; }, 400); // Jeda waktu transisi aman
-                } else if (e.deltaY < 0 && currentScroll % pageHeight > pageHeight - 50) {
-                    // Scroll ke halaman sebelumnya dengan halus
-                    isScrolling = true;
-                    scrollContainer.scrollBy({
-                        top: -pageHeight,
-                        behavior: 'smooth'
-                    });
-                    setTimeout(() => { isScrolling = false; }, 400);
-                }
-            }, { passive: true });
-        }
-        // 8. ANIMASI BUNGA PAGE 5 (PEMBERKATAN: GOYANG KIRI KANAN HALUS)
-        const pagePemberkatan = document.querySelector('#pagePemberkatan');
-        const pemberkatanFlower = document.querySelector('#pemberkatanFlower');
-
-        if (pagePemberkatan && pemberkatanFlower) {
-            let hasAnimatedPemberkatan = false;
-
-            pemberkatanFlower.style.transformOrigin = 'bottom center';
-            pemberkatanFlower.style.opacity = '0';
-            pemberkatanFlower.style.transform = 'translateY(20px) scale(1.05) rotate(0deg)';
-
-            const observerPemberkatan = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !hasAnimatedPemberkatan) {
-                        hasAnimatedPemberkatan = true;
-
-                        // 1. Animasi Masuk
-                        const enterAnimation = pemberkatanFlower.animate([
-                            { opacity: 0, transform: 'translateY(20px) scale(1.05) rotate(0deg)' },
-                            { opacity: 1, transform: 'translateY(0px) scale(1.05) rotate(0deg)' }
-                        ], {
-                            duration: 1200,
-                            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                            fill: 'forwards'
-                        });
-
-                        // 2. Animasi Goyang Rumput
-                        enterAnimation.onfinish = () => {
-                            pemberkatanFlower.animate([
-                                { transform: 'scale(1.05) rotate(0deg)', offset: 0 },
-                                { transform: 'scale(1.05) rotate(-1.2deg)', offset: 0.25 },
-                                { transform: 'scale(1.05) rotate(0deg)', offset: 0.50 },
-                                { transform: 'scale(1.05) rotate(1.2deg)', offset: 0.75 },
-                                { transform: 'scale(1.05) rotate(0deg)', offset: 1.0 }
-                            ], {
-                                duration: 5500,
-                                easing: 'linear',
-                                iterations: Infinity
-                            });
-                        };
-                    }
-                });
-            }, {
-                threshold: 0.3
-            });
-
-            observerPemberkatan.observe(pagePemberkatan);
-        }
-        
-        // 9. ANIMASI BUNGA PAGE 6 (RESEPSI: GOYANG KIRI KANAN HALUS)
-        const pageResepsi = document.querySelector('#pageResepsi');
-        const resepsiFlower = document.querySelector('#resepsiFlower');
-
-        if (pageResepsi && resepsiFlower) {
-            let hasAnimatedResepsi = false;
-
-            resepsiFlower.style.transformOrigin = 'bottom center';
-            resepsiFlower.style.opacity = '0';
-            resepsiFlower.style.transform = 'translateY(20px) scale(1.05) rotate(0deg)';
-
-            const observerResepsi = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !hasAnimatedResepsi) {
-                        hasAnimatedResepsi = true;
-
-                        // 1. Animasi Masuk
-                        const enterAnimation = resepsiFlower.animate([
-                            { opacity: 0, transform: 'translateY(20px) scale(1.05) rotate(0deg)' },
-                            { opacity: 1, transform: 'translateY(0px) scale(1.05) rotate(0deg)' }
-                        ], {
-                            duration: 1200,
-                            easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                            fill: 'forwards'
-                        });
-
-                        // 2. Animasi Goyang Rumput
-                        enterAnimation.onfinish = () => {
-                            resepsiFlower.animate([
-                                { transform: 'scale(1.05) rotate(0deg)', offset: 0 },
-                                { transform: 'scale(1.05) rotate(-1.2deg)', offset: 0.25 },
-                                { transform: 'scale(1.05) rotate(0deg)', offset: 0.50 },
-                                { transform: 'scale(1.05) rotate(1.2deg)', offset: 0.75 },
-                                { transform: 'scale(1.05) rotate(0deg)', offset: 1.0 }
-                            ], {
-                                duration: 5500,
-                                easing: 'linear',
-                                iterations: Infinity
-                            });
-                        };
-                    }
-                });
-            }, {
-                threshold: 0.3
-            });
-
-            observerResepsi.observe(pageResepsi);
-        }
 });
+
+// ==========================================
+// 3. FITUR SUPABASE: FETCH & SUBMIT UCAPAN
+// ==========================================
+
+async function fetchWishes() {
+    const wishesList = document.getElementById('wishesList');
+    const countBadge = document.getElementById('wishCount');
+    if (!wishesList) return;
+
+    try {
+        const { data: wishes, error } = await supabaseClient
+            .from('wishes')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        wishesList.innerHTML = ''; 
+
+        if (wishes && wishes.length > 0) {
+            if (countBadge) countBadge.innerHTML = `<i class="bi bi-chat-heart-fill me-1"></i> ${wishes.length} Doa Restu`;
+
+            wishes.forEach(item => {
+                appendWishCard(item.name, item.message, item.created_at);
+            });
+        } else {
+            if (countBadge) countBadge.innerHTML = `<i class="bi bi-chat-heart me-1"></i> 0 Doa Restu`;
+            wishesList.innerHTML = '<p class="text-center text-muted small py-3 mb-0">Belum ada ucapan. Jadilah yang pertama memberikan doa restu!</p>';
+        }
+    } catch (err) {
+        console.error('Gagal mengambil ucapan:', err.message);
+        wishesList.innerHTML = '<p class="text-center text-muted small py-3 mb-0"><i class="bi bi-exclamation-circle me-1"></i> Gagal terhubung ke database.</p>';
+    }
+}
+
+async function submitWish(event) {
+    event.preventDefault();
+
+    const nameInput = document.getElementById('guestName');
+    const messageInput = document.getElementById('guestMessage');
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+
+    const name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+
+    if (!name || !message) return;
+
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="bi bi-arrow-repeat spin-icon me-1"></i> Mengirim...';
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('wishes')
+            .insert([{ name: name, message: message }])
+            .select();
+
+        if (error) throw error;
+
+        nameInput.value = '';
+        messageInput.value = '';
+
+        if (data && data.length > 0) {
+            appendWishCard(data[0].name, data[0].message, data[0].created_at, true);
+        }
+
+        submitBtn.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Terkirim!';
+        setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+            fetchWishes();
+        }, 1800);
+
+    } catch (err) {
+        console.error('Gagal mengirim ucapan:', err.message);
+        alert('Gagal mengirim ucapan. Silakan coba lagi.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    }
+}
+
+function appendWishCard(name, message, createdAt, isNew = false) {
+    const wishesList = document.getElementById('wishesList');
+    if (!wishesList) return;
+
+    if (wishesList.querySelector('p.text-muted')) {
+        wishesList.innerHTML = '';
+    }
+
+    const wishCard = document.createElement('div');
+    wishCard.className = 'wish-item-card';
+
+    wishCard.innerHTML = `
+        <h6 class="wish-author-name mb-1">${escapeHtml(name)}</h6>
+        <p class="wish-text mb-1">${escapeHtml(message)}</p>
+        <small class="wish-time">${formatDate(createdAt)}</small>
+    `;
+
+    if (isNew) {
+        wishCard.style.opacity = '0';
+        wishCard.style.transform = 'translateY(-18px) scale(0.95)';
+        wishCard.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+        wishesList.insertBefore(wishCard, wishesList.firstChild);
+
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                wishCard.style.opacity = '1';
+                wishCard.style.transform = 'translateY(0) scale(1)';
+            }, 30);
+        });
+    } else {
+        wishesList.appendChild(wishCard);
+    }
+}
+
+function formatDate(dateString) {
+    if (!dateString) return 'Baru saja';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) return 'Baru saja';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} menit lalu`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} jam lalu`;
+    
+    return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// ==========================================
+// 4. FITUR COPY NO REKENING & EFEK KETUK KARTU
+// ==========================================
+function copyFromImage(accountNumber, cardElement) {
+    navigator.clipboard.writeText(accountNumber).then(function() {
+        const popout = cardElement.querySelector('.popout-copy-badge');
+        
+        cardElement.style.transition = 'transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        cardElement.style.transform = 'scale(0.95)';
+        
+        setTimeout(() => {
+            cardElement.style.transform = 'scale(1)';
+        }, 150);
+
+        if (popout) {
+            if (cardElement._popoutTimeout) clearTimeout(cardElement._popoutTimeout);
+
+            popout.classList.add('show-popout');
+            
+            cardElement._popoutTimeout = setTimeout(function() {
+                popout.classList.remove('show-popout');
+            }, 1800);
+        }
+    }).catch(function(err) {
+        console.error('Gagal menyalin rekening: ', err);
+    });
+}
+
+// ==========================================
+// KONTROL MUSIC
+// ==========================================
+const audio = document.getElementById('weddingMusic');
+const musicBtn = document.getElementById('musicToggleBtn');
+
+if (audio && musicBtn) {
+    audio.volume = 0.3;
+    let isPlaying = false;
+
+    function playAudio() {
+        if (isPlaying) return;
+        audio.play().then(() => {
+            isPlaying = true;
+            musicBtn.classList.remove('paused');
+        }).catch(err => {
+            console.log("Autoplay ditahan browser:", err);
+        });
+    }
+
+    function pauseAudio() {
+        audio.pause();
+        isPlaying = false;
+        musicBtn.classList.add('paused');
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('playMusic') === 'true') {
+        playAudio();
+    }
+
+    function startMusicOnInteraction() {
+        playAudio();
+        window.removeEventListener('touchstart', startMusicOnInteraction);
+        window.removeEventListener('click', startMusicOnInteraction);
+        const scrollContainer = document.getElementById('scrollContainer');
+        if (scrollContainer) {
+            scrollContainer.removeEventListener('scroll', startMusicOnInteraction);
+        }
+    }
+
+    window.addEventListener('touchstart', startMusicOnInteraction, { once: true });
+    window.addEventListener('click', startMusicOnInteraction, { once: true });
+    
+    const scrollContainer = document.getElementById('scrollContainer');
+    if (scrollContainer) {
+        scrollContainer.addEventListener('scroll', startMusicOnInteraction, { once: true });
+    }
+
+    musicBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (isPlaying) {
+            pauseAudio();
+        } else {
+            playAudio();
+        }
+    });
+}
+
+function makeCanvasFullScreen() {
+    const canvas = document.querySelector('.card-canvas');
+    if (!canvas) return;
+
+    if (window.innerWidth <= 576) {
+        // Matikan efek scale agar kanvas murni memenuhi 100% tinggi & lebar HP
+        canvas.style.transform = 'none';
+        canvas.style.width = '100vw';
+        canvas.style.height = `${window.innerHeight}px`;
+    } else {
+        canvas.style.width = '';
+        canvas.style.height = '';
+    }
+}
+
+window.addEventListener('resize', makeCanvasFullScreen);
+document.addEventListener('DOMContentLoaded', makeCanvasFullScreen);
+makeCanvasFullScreen();

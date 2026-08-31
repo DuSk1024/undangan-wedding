@@ -70,13 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.85,
                 ease: "power3.inOut",
                 onComplete: function () {
-                    sessionStorage.setItem('playAudio', 'true');
-                    
+                    // Buat URL ke main.html dengan parameter playMusic=true
+                    let targetUrl = "main.html?playMusic=true";
                     if (guestParam) {
-                        window.location.href = "main.html?to=" + encodeURIComponent(guestParam);
-                    } else {
-                        window.location.href = "main.html";
+                        targetUrl += "&to=" + encodeURIComponent(guestParam);
                     }
+                    window.location.href = targetUrl;
                 }
             });
         });
