@@ -1463,9 +1463,9 @@ body {
 /* 2. ORNAMEN BUNGA 48 POJOK KIRI ATAS BINGKAI */
 .arch-flower-top-left {
   position: absolute !important;
-  top: -100px !important;        /* Disesuaikan agar bunga menempel pas di lengkungan */
-  left: -160px !important;       /* Disesuaikan agar tidak terlalu jauh terlempar ke kiri */
-  width: 270px !important;
+  top: -90px !important;        /* Disesuaikan agar bunga menempel pas di lengkungan */
+  left: -80px !important;       /* Disesuaikan agar tidak terlalu jauh terlempar ke kiri */
+  width: 185px !important;
   max-width: 42vw !important;
   height: auto !important;
   z-index: 25 !important;
