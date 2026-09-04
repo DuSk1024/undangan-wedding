@@ -520,7 +520,9 @@ body {
   font-size: 0.95rem;
   color: var(--olive-dark);
   font-weight: 500;
-  letter-spacing: 1.5px;
+  letter-spacing: 3px !important; /* Menambah kerenggangan spasi antar huruf */
+  margin-bottom: 10px !important;  /* Memberi jarak vertikal ke nama Stephen & Dessy */
+  display: block !important;
 }
 
 .couple-name {
@@ -1125,6 +1127,12 @@ body {
   content: "\F4C3";
 }
 
+/* SEMBUNYIKAN TOMBOL MUSIK (MUSIK TETAP BERPUTAR) */
+.music-toggle-btn,
+#musicToggleBtn {
+  display: none !important;
+}
+
 @keyframes spinRecord {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -1474,9 +1482,6 @@ body {
   /* UBAH TRANSFORM ORIGIN MENJADI CENTER */
   transform: rotate(10deg) !important;  /* Bebas atur sudut (misal: -10deg, -25deg, atau 15deg) */
   transform-origin: center !important;  /* KUNCI: Titik poros putar tepat di tengah gambar */
-
-  
-  
 }
 
 /* 3. RESPONSIF LAYAR HP (MOBILE) */
@@ -1494,9 +1499,9 @@ body {
   }
 
   .arch-flower-top-left {
-    top: -35px !important;
-    left: -42px !important;
-    width: 125px !important;
+    top: -86px !important;
+    left: -60px !important;
+    width: 185px !important;
   }
 }
 
@@ -1572,14 +1577,15 @@ body {
   }
 
   .bride-birds-top-left {
-    top: -10px !important;
-    left: -15px !important;
-    width: 90px !important;
+    top: 33px !important;
+    left: 30px !important;
+    width: 130px !important;
   }
 
   .bride-flower-bottom {
-    bottom: -28px !important;
-    width: 115% !important;
+    bottom: -128px !important;
+    width: 135% !important;
+    left: 175px !important;
   }
 }
 
@@ -1643,14 +1649,14 @@ body {
 /* 3. RESPONSIF KHUSUS HP (MOBILE) */
 @media screen and (max-width: 576px) {
   .pemberkatan-flower-left {
-    bottom: -35px !important;
-    left: -50px !important;
+    bottom: -170px !important;
+    left: -90px !important;
     width: 180px !important;
   }
 
   .pemberkatan-flower-right {
-    bottom: -35px !important;
-    right: -50px !important;
+    bottom: -170px !important;
+    right: -90px !important;
     width: 180px !important;
   }
 }
@@ -1700,8 +1706,10 @@ body {
 /* 3. RESPONSIF LAYAR HP (MOBILE) */
 @media screen and (max-width: 576px) {
   .gallery-flower-bottom {
-    bottom: -25px !important;
-    width: 115% !important;
+    bottom: -176px !important;
+    width: 190% !important;
+    left: -430px !important;
+    max-width: 900px !important;
   }
 }
 
@@ -1718,7 +1726,7 @@ body {
 /* RESPONSIF KHUSUS HP (MOBILE) */
 @media screen and (max-width: 576px) {
   .gift-clean-card {
-    margin-top: 100px !important; /* Jarak turun khusus di layar HP */
+    margin-top: 160px !important; /* Jarak turun khusus di layar HP */
   }
 } 
 
@@ -1764,15 +1772,17 @@ body {
 /* 3. RESPONSIF LAYAR HP (MOBILE) */
 @media screen and (max-width: 576px) {
   .gift-flower-left-new {
-    top: 42% !important;
-    left: -48px !important;
-    width: 130px !important;
+    top: 310px !important;
+    left: -38px !important;
+    width: 300px !important;
+    max-width: 42vw !important;
   }
 
   .gift-flower-right-new {
-    bottom: -45px !important;
-    right: -42px !important;
-    width: 125px !important;
+    bottom: -60px !important;
+    right: -90px !important;
+    width: 165px !important;
+    max-width: 40vw !important;
   }
 }
 
@@ -1803,10 +1813,10 @@ body {
 /* 2. BANNER BUNGA HORIZONTAL BAWAH (bunga56.png) */
 .wishes-flower-bottom {
   position: absolute !important;
-  bottom: -170px !important;
-  left: 230px !important;
+  bottom: -100px !important;
+  left: 145px !important;
   transform: translateX(-50%) !important;
-  width: 590px !important;
+  width: 900px !important;
   max-width: 48vw !important;
   height: auto !important;
   z-index: 25 !important;
@@ -1824,8 +1834,269 @@ body {
   }
 
   .wishes-flower-bottom {
-    bottom: -30px !important;
-    width: 118% !important;
+    bottom: -116px !important;
+    width: 500px !important;
+    left: 183px !important;
+    transform: translateX(-50%) !important;
+    max-width: 150vw !important;
   }
 }
 
+/* ==========================================
+   SECTION: THANK YOU (PRESISI & TANPA DUPLIKASI)
+========================================== */
+
+/* 1. INDUK UTAMA SECTION BAWAH */
+.single-continuous-section {
+  padding-bottom: 0 !important;
+}
+
+.scroll-target-block.thankyou-section {
+  position: relative !important;
+  z-index: 10 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding-top: 120px !important;
+  padding-bottom: 0 !important;
+  background-color: transparent !important;
+}
+
+/* 2. KARTU TRANSPARAN GLASS */
+.thankyou-card-wrapper {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  min-height: calc(100vh - 40px) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(0px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(0px) saturate(120%) !important;
+  border-top-left-radius: 28px !important;
+  border-top-right-radius: 28px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  padding-top: 40px !important;
+  padding-left: 25px !important;
+  padding-right: 25px !important;
+  padding-bottom: 60px !important;
+  margin: 0 auto !important; /* TANPA margin-top ganda di sini */
+  overflow: hidden !important;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08) !important;
+  color: #2f3625 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+}
+
+/* 3. BINGKAI GARIS LENGKUNG ARCH */
+.thankyou-arch-border {
+  position: absolute !important;
+  top: 18px !important;
+  left: 18px !important;
+  right: 18px !important;
+  bottom: 0 !important;
+  border: 1px solid rgba(142, 119, 102, 0.35) !important;
+  border-bottom: none !important;
+  border-radius: 180px 180px 0 0 !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* 4. KONTEN DALAM */
+.thankyou-content-inner {
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+/* SUBHEADER & JUDUL UTAMA (TETAP DI ATAS RAPI) */
+.ty-small-header {
+  font-family: 'The Seasons', 'Cormorant Garamond', serif !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 4px !important;
+  color: #8c7863 !important;
+  font-weight: 600 !important;
+}
+
+.ty-divider-line {
+  position: relative !important;
+  width: 90px !important;
+  height: 1px !important;
+  background: rgba(140, 120, 99, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ty-dot {
+  width: 5px !important;
+  height: 5px !important;
+  background-color: #8c7863 !important;
+  border-radius: 50% !important;
+}
+
+.ty-heart-icon {
+  font-size: 0.9rem !important;
+  color: #8c7863 !important;
+}
+
+.ty-main-heading {
+  font-family: 'The Seasons', 'Cormorant Garamond', serif !important;
+  font-size: 2.5rem !important;
+  line-height: 1.25 !important;
+  color: #373129 !important;
+  font-weight: 500 !important;
+  margin-top: 48px !important;
+  margin-bottom: 8px !important;
+}
+
+.ty-subtext {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.88rem !important;
+  line-height: 1.5 !important;
+  color: #373129 !important;
+  font-weight: 400 !important;
+  margin-top: 0 !important;
+}
+
+/* 5. MENDORONG HANYA BLOK HIJAU BAWAH (STEPHEN & DESSY DST) KE BAWAH FOTO PASANGAN */
+.ty-heart-wreath {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  color: #8c7863 !important;
+  
+  /* 📌 NAIK/TURUNKAN ANGKA INI UNTUK MENGATUR POSISI BLOK HIJAU BAWAH */
+  margin-top: 100px !important; 
+}
+
+.ty-heart-outline {
+  font-size: 1.3rem !important;
+}
+
+.ty-leaf-left, 
+.ty-leaf-right {
+  font-size: 0.9rem !important;
+  opacity: 0.7 !important;
+}
+
+.ty-couple-names {
+  font-family: 'Amoresa', cursive !important;
+  font-size: 2.8rem !important;
+  color: #373129 !important;
+  font-weight: normal !important;
+  line-height: 1 !important;
+  margin-top: 170px !important;
+  margin-bottom: 12px !important;
+  transform: none !important;
+}
+
+.ty-thin-line {
+  width: 140px !important;
+  height: 1px !important;
+  background: rgba(140, 120, 99, 0.3) !important;
+}
+
+.ty-date-text {
+  font-family: 'The Seasons', 'Cormorant Garamond', serif !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 2px !important;
+  font-weight: bold;
+  color: #1f1e1c !important;
+  font-weight: 600 !important;
+}
+
+.ty-quote-text {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic !important;
+  font-size: 1.05rem !important;
+  font-weight: 600;
+  line-height: 1.4 !important;
+  color: #373129 !important;
+  margin-top: 90px !important;
+  margin-bottom: 12px !important;
+}
+
+.btn-back-home {
+  background: #8c7863 !important;
+  border: 1px solid #8c7863 !important;
+  color: #e5e0d8 !important;
+  border-radius: 50px !important;
+  padding: 10px 28px !important;
+  font-family: 'The Seasons', serif !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 2px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+}
+
+.btn-back-home:hover {
+  background: transparent !important;
+  color: #8c7878 !important;
+  box-shadow: 0 4px 12px rgba(140, 120, 99, 0.25) !important;
+}
+
+.ty-flower {
+  position: absolute !important;
+  width: 210px !important;
+  max-width: 50vw !important;
+  height: auto !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.05)) !important;
+}
+
+.ty-flower-top-left {
+  top: -20px !important;
+  left: -30px !important;
+  transform: rotate(5deg) !important;
+}
+
+.ty-flower-bottom-right {
+  bottom: -80px !important;
+  right: -40px !important;
+  width: 900px;
+  transform: scaleX(-1) rotate(-10deg) !important;
+}
+
+/* RESPONSIF LAYAR HP (MOBILE SCREEN) */
+@media screen and (max-width: 576px) {
+  .scroll-target-block.thankyou-section {
+    padding-top: 30px !important;
+  }
+
+  .thankyou-card-wrapper {
+    min-height: calc(100dvh - 30px) !important;
+    padding-top: 30px !important;
+    padding-bottom: 50px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .ty-main-heading {
+    font-size: 2.5rem !important;
+  }
+
+  /* 📌 JARAK MENDORONG BLOK HIJAU DI HP */
+  .ty-heart-wreath {
+    margin-top: 220px !important; 
+  }
+
+  .ty-couple-names {
+    font-size: 2.3rem !important;
+  }
+
+  .ty-flower-top-left {
+    top: -20px !important;
+    left: -30px !important;
+    transform: rotate(5deg) !important;
+  }
+
+  .ty-flower-bottom-right {
+    bottom: -80px !important;
+    right: -40px !important;
+    width: 900px;
+    transform: scaleX(-1) rotate(-10deg) !important;
+  }
+}

@@ -38,14 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // 3. ANIMASI POP-OUT 3D & STAGGERED REVEAL
+    // 3. ANIMASI TRANSISI SCROLL PERSIS SEPERTI VIDEO (MUNCUL PAS KELIHATAN)
     const scrollContainer = document.getElementById('scrollContainer');
     const scrollTargetBlocks = document.querySelectorAll('.scroll-target-block');
     const bgSlides = document.querySelectorAll('.bg-slide');
 
     if (scrollContainer && scrollTargetBlocks.length > 0) {
         
-        // A. Observer Transisi Latar Belakang Cross-Fade
+        // A. Observer Transisi Latar Belakang Cross-Fade (FIX DOUBLE / STACK)[cite: 7, 8]
         const bgObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -54,8 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         bgSlides.forEach(slide => {
                             if (slide.id === bgId) {
                                 slide.classList.add('active');
+                                slide.style.opacity = '0.76';
+                                slide.style.visibility = 'visible';
                             } else {
                                 slide.classList.remove('active');
+                                slide.style.opacity = '0';
+                                slide.style.visibility = 'hidden';
                             }
                         });
                     }
@@ -65,18 +69,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         scrollTargetBlocks.forEach(block => bgObserver.observe(block));
 
-        // B. Observer Kemunculan Pop-Out Tulisan & Kartu Berurutan
+        // B. Observer Kemunculan Elemen (PAS KELIHATAN DI LAYAR, BARU MUNCUL HALUS)
         const contentObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const revealElements = entry.target.querySelectorAll('.reveal-element');
 
                 if (entry.isIntersecting) {
+                    // Begitu blok benar-benar masuk layar, aktifkan animasi berurutan
                     revealElements.forEach((el, index) => {
                         setTimeout(() => {
                             el.classList.add('active-pop');
-                        }, index * 120); 
+                        }, index * 100); // Jeda antar elemen agar mengalir rapi
                     });
                 } else {
+                    // Jika elemen keluar layar ke atas/bawah, reset kembali posisinya agar bisa di-trigger ulang dengan mulus
                     revealElements.forEach(el => {
                         el.classList.remove('active-pop');
                     });
@@ -84,27 +90,29 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }, {
             root: scrollContainer,
-            threshold: 0.12,
-            rootMargin: "0px 0px -40px 0px"
+            // KUNCI UTAMA: rootMargin diset "0px 0px -10% 0px" artinya elemen 
+            // BARU AKAN ANIMASI PAS SUDAH MASUK KE DALAM AREA PANDANG LAYAR, BUKAN SEBELUM KELIHATAN.
+            threshold: 0.2,
+            rootMargin: "0px 0px -10% 0px"
         });
 
         scrollTargetBlocks.forEach(block => contentObserver.observe(block));
 
         // C. Dynamic Scroll Micro Parallax (HANYA AKTIF DI LAYAR BESAR)
         scrollContainer.addEventListener('scroll', () => {
-            if (window.innerWidth <= 576) return; // Mencegah bentrokan layout di HP
+            if (window.innerWidth <= 576) return; // Mencegah bentrokan layout di HP[cite: 8]
             
             const scrollTop = scrollContainer.scrollTop;
             const activeElements = document.querySelectorAll('.reveal-element.active-pop');
             
             activeElements.forEach((el, idx) => {
-                const speed = (idx % 2 === 0) ? 0.02 : -0.015;
+                const speed = (idx % 2 === 0) ? 0.015 : -0.01;
                 el.style.transform = `translateY(${scrollTop * speed}px) scale(1) rotateX(0deg)`;
             });
         }, { passive: true });
     }
 
-    // 4. LOAD DAFTAR UCAPAN DARI SUPABASE
+    // 4. LOAD DAFTAR UCAPAN DARI SUPABASE[cite: 8]
     fetchWishes();
 
 });
@@ -339,7 +347,7 @@ function makeCanvasFullScreen() {
     if (!canvas) return;
 
     if (window.innerWidth <= 576) {
-        // Matikan efek scale agar kanvas murni memenuhi 100% tinggi & lebar HP
+        // Matikan efek scale agar kanvas murni memenuhi 100% tinggi & lebar HP[cite: 8]
         canvas.style.transform = 'none';
         canvas.style.width = '100vw';
         canvas.style.height = `${window.innerHeight}px`;
@@ -352,3 +360,72 @@ function makeCanvasFullScreen() {
 window.addEventListener('resize', makeCanvasFullScreen);
 document.addEventListener('DOMContentLoaded', makeCanvasFullScreen);
 makeCanvasFullScreen();
+
+/* ==========================================
+   SLIDESHOW BACKGROUND PARALLAX KHUSUS THANK YOU (#bg6)
+========================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  const thankYouPhotos = [
+    "foto pernikahan/foto1.jpeg",
+    "foto pernikahan/foto2.jpeg",
+    "foto pernikahan/foto3.jpeg",
+    "foto pernikahan/foto5.jpeg"
+  ];
+
+  let currentPhotoIndex = 0;
+  let bgSlideTimer = null;
+
+  // Target elemen background khusus #bg6 dan section data-bg="bg6"[cite: 8]
+  const bg6Image = document.getElementById("bg6");
+  const thankYouSection = document.querySelector('.scroll-target-block[data-bg="bg6"]');
+
+  if (!bg6Image || !thankYouSection) return;
+
+  function slideNextBackground() {
+    currentPhotoIndex = (currentPhotoIndex + 1) % thankYouPhotos.length;
+    
+    bg6Image.style.transition = "opacity 0.8s ease-in-out";
+    bg6Image.style.opacity = "0.2";
+
+    setTimeout(() => {
+      bg6Image.src = thankYouPhotos[currentPhotoIndex];
+      bg6Image.style.opacity = "0.76";
+    }, 400);
+  }
+
+  const scrollContainer = document.getElementById("scrollContainer");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (!bgSlideTimer) {
+            bgSlideTimer = setInterval(slideNextBackground, 3500);
+          }
+        } else {
+          if (bgSlideTimer) {
+            clearInterval(bgSlideTimer);
+            bgSlideTimer = null;
+          }
+        }
+      });
+    },
+    { 
+      root: scrollContainer,
+      threshold: 0.25 
+    }
+  );
+
+  observer.observe(thankYouSection);
+});
+
+// FITUR SCROLL KEMBALI KE ATAS (BACK TO HOME)
+function scrollToTop() {
+    const scrollContainer = document.getElementById('scrollContainer');
+    if (scrollContainer) {
+        scrollContainer.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+}
