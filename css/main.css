@@ -1813,10 +1813,10 @@ body {
 /* 2. BANNER BUNGA HORIZONTAL BAWAH (bunga56.png) */
 .wishes-flower-bottom {
   position: absolute !important;
-  bottom: -100px !important;
-  left: 145px !important;
+  bottom: -170px !important;
+  left: 230px !important;
   transform: translateX(-50%) !important;
-  width: 900px !important;
+  width: 600px !important;
   max-width: 48vw !important;
   height: auto !important;
   z-index: 25 !important;
