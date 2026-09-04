@@ -93,17 +93,22 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+
   opacity: 0;
-  transform: scale(1.08);
+
+  /* HILANGKAN ZOOM BACKGROUND */
+  transform: none;
+
+  /* HANYA CROSSFADE */
   transition:
-    opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1),
-    transform 1.6s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: opacity, transform;
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change: opacity;
 }
 
 .bg-slide.active {
   opacity: 0.76 !important;
-  transform: scale(1);
+  transform: none !important;
 }
 
 .bg-overlay-vignette {
@@ -130,8 +135,10 @@ body {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -150,15 +157,22 @@ body {
 }
 
 /* ==========================================
-   6. REVEAL ANIMATION (FLOATING FADE)
+   6. MOTION CONTENT SEPERTI VIDEO
+   Elemen TIDAK pop / fade / zoom sendiri.
+   Mereka bergerak bersama scroll halaman.
 ========================================== */
+
 .reveal-element {
-  opacity: 0;
-  transform: translateY(28px) scale(0.96);
-  transition:
-    opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  opacity: 1 !important;
+  filter: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}
+
+.reveal-element.active-pop {
+  opacity: 1 !important;
+  filter: none !important;
+  transition: none !important;
 }
 
 .reveal-element.active-pop {
@@ -1048,25 +1062,25 @@ body {
 /* ==========================================
    ANIMASI POP-OUT & SPRING 3D SUPER MEWAH
 ========================================== */
+/* ==========================================
+   TRANSISI POP / BLUR / 3D DINONAKTIFKAN
+========================================== */
+
 .scroll-target-block {
-  perspective: 1000px;
+  perspective: none;
 }
 
 .reveal-element {
-  opacity: 0 !important;
-  transform: translateY(45px) scale(0.85) rotateX(15deg);
-  transition: 
-    opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-    transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
-    filter 0.8s ease !important;
-  filter: blur(6px);
-  will-change: transform, opacity, filter;
+  opacity: 1 !important;
+  filter: none !important;
+  transition: none !important;
+  will-change: auto !important;
 }
 
 .reveal-element.active-pop {
   opacity: 1 !important;
-  transform: translateY(0) scale(1) rotateX(0deg) !important;
-  filter: blur(0px) !important;
+  filter: none !important;
+  transition: none !important;
 }
 
 /* ==========================================
@@ -2099,4 +2113,340 @@ body {
     width: 900px;
     transform: scaleX(-1) rotate(-10deg) !important;
   }
+}
+
+/* =========================================================
+   FINAL VIDEO REVEAL
+   MUNCUL DARI DALAM → MEMBESAR KELUAR
+
+   HANYA VISUAL MOTION.
+   TIDAK MENGUBAH:
+   - posisi layout
+   - margin
+   - padding
+   - font
+   - ukuran design akhir
+========================================================= */
+
+
+/* =========================================================
+   SEMUA TEXT
+========================================================= */
+
+.scroll-target-block .video-fade-text {
+  /*
+    KONDISI AWAL:
+
+    Benar-benar terasa "di dalam".
+    Bukan 0.84 lagi karena terlalu tipis.
+
+    0.58 = cuma 58% dari ukuran akhirnya.
+  */
+  opacity: 0 !important;
+
+  scale: 0.58 !important;
+
+  /*
+    TIDAK naik dari bawah.
+    Murni muncul dari tengah.
+  */
+  translate: 0 0 !important;
+
+  filter: none !important;
+
+  visibility: visible !important;
+
+  /*
+    Membesar dari tengah element.
+  */
+  transform-origin: center center !important;
+
+
+  /*
+    Cubic bezier ini:
+    awalnya cepat keluar dari dalam,
+    lalu melambat ketika mendekati ukuran normal.
+
+    Jadi bukan zoom linear murahan.
+  */
+  transition:
+    opacity 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+    scale 0.95s cubic-bezier(0.16, 1, 0.3, 1) !important;
+
+  will-change: opacity, scale !important;
+}
+
+
+/* =========================================================
+   SAAT TEXT TERLIHAT
+========================================================= */
+
+.scroll-target-block .video-fade-text.is-visible {
+  opacity: 1 !important;
+
+  scale: 1 !important;
+
+  translate: 0 0 !important;
+}
+
+
+/* =========================================================
+   HEADING BESAR
+   LEBIH DALAM LAGI
+========================================================= */
+
+.scroll-target-block h1.video-fade-text,
+.scroll-target-block h2.video-fade-text,
+.scroll-target-block h3.video-fade-text,
+
+.scroll-target-block .couple-name.video-fade-text,
+.scroll-target-block .event-main-title.video-fade-text,
+.scroll-target-block .gallery-title.video-fade-text,
+.scroll-target-block .gift-title.video-fade-text,
+.scroll-target-block .wishes-title.video-fade-text {
+
+  /*
+    Judul besar mulai lebih kecil.
+
+    Jadi Stephen & Dessy,
+    Matius,
+    Wedding Event,
+    Gallery,
+    Gift,
+    dll benar-benar kelihatan
+    "keluar dari dalam".
+  */
+  scale: 0.50 !important;
+}
+
+
+.scroll-target-block h1.video-fade-text.is-visible,
+.scroll-target-block h2.video-fade-text.is-visible,
+.scroll-target-block h3.video-fade-text.is-visible,
+
+.scroll-target-block .couple-name.video-fade-text.is-visible,
+.scroll-target-block .event-main-title.video-fade-text.is-visible,
+.scroll-target-block .gallery-title.video-fade-text.is-visible,
+.scroll-target-block .gift-title.video-fade-text.is-visible,
+.scroll-target-block .wishes-title.video-fade-text.is-visible {
+
+  scale: 1 !important;
+}
+
+
+/* =========================================================
+   PARAGRAPH / TEXT KECIL
+========================================================= */
+
+.scroll-target-block p.video-fade-text,
+.scroll-target-block label.video-fade-text {
+
+  /*
+    Body text jangan sekecil heading.
+    Tetap terasa tumbuh,
+    tapi masih readable secara visual.
+  */
+  scale: 0.68 !important;
+}
+
+
+.scroll-target-block p.video-fade-text.is-visible,
+.scroll-target-block label.video-fade-text.is-visible {
+
+  scale: 1 !important;
+}
+
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+.scroll-target-block .countdown-display.video-fade-text {
+  opacity: 0 !important;
+
+  /*
+    Timer terasa keluar dari tengah.
+  */
+  scale: 0.62 !important;
+
+  transform-origin: center center !important;
+
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    scale 1s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+
+.scroll-target-block .countdown-display.video-fade-text.is-visible {
+  opacity: 1 !important;
+
+  scale: 1 !important;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.scroll-target-block .btn-olive-pill.video-fade-text,
+.scroll-target-block .btn-clean-outline.video-fade-text,
+.scroll-target-block .btn-back-home.video-fade-text {
+
+  opacity: 0 !important;
+
+  scale: 0.72 !important;
+
+  transform-origin: center center !important;
+
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    scale 0.9s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+
+.scroll-target-block .btn-olive-pill.video-fade-text.is-visible,
+.scroll-target-block .btn-clean-outline.video-fade-text.is-visible,
+.scroll-target-block .btn-back-home.video-fade-text.is-visible {
+
+  opacity: 1 !important;
+
+  scale: 1 !important;
+}
+
+
+/* =========================================================
+   FOTO HERO AWAL
+========================================================= */
+
+.scroll-target-block .video-cover-photo {
+  opacity: 0 !important;
+
+  /*
+    Foto lebih subtle daripada text.
+    Kalau 0.5 nanti terlalu dramatis.
+  */
+  scale: 0.86 !important;
+
+  translate: 0 0 !important;
+
+  filter: none !important;
+
+  visibility: visible !important;
+
+  transform-origin: center center !important;
+
+  transition:
+    opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+    scale 1.1s cubic-bezier(0.16, 1, 0.3, 1) !important;
+
+  will-change: opacity, scale !important;
+}
+
+
+.scroll-target-block .video-cover-photo.is-visible {
+  opacity: 1 !important;
+
+  scale: 1 !important;
+
+  translate: 0 0 !important;
+}
+
+
+/* =========================================================
+   BUNGA COVER
+========================================================= */
+
+.scroll-target-block .video-cover-flower {
+  opacity: 0 !important;
+
+  /*
+    Bunga juga sedikit "mekar".
+  */
+  scale: 0.82 !important;
+
+  transform-origin: center center !important;
+
+  transition:
+    opacity 0.9s ease,
+    scale 1.05s cubic-bezier(0.16, 1, 0.3, 1) !important;
+
+  will-change: opacity, scale !important;
+}
+
+
+.scroll-target-block .video-cover-flower.is-visible {
+  opacity: 1 !important;
+
+  scale: 1 !important;
+}
+
+/* =========================================================
+   CINEMATIC BOTANICAL MOTION
+   KHUSUS ANIMASI BUNGA / ORNAMEN
+
+   TIDAK MENGUBAH:
+   - top
+   - bottom
+   - left
+   - right
+   - width
+   - posisi design asli
+   - transform asli bunga
+========================================================= */
+
+.flower-cinematic {
+
+  /* JS mengontrol nilai ini */
+  opacity:
+    var(--flower-opacity, 0) !important;
+
+
+  /*
+    Individual translate.
+    Aman untuk transform asli seperti:
+    rotate(...)
+    scaleX(-1)
+    translateX(-50%)
+  */
+  translate:
+    var(--flower-x, 0px)
+    var(--flower-y, 0px) !important;
+
+
+  /*
+    Efek bunga mekar.
+  */
+  scale:
+    var(--flower-scale, 0.6) !important;
+
+
+  /*
+    Sedikit sway hidup.
+    Ini BUKAN mengganti transform asli.
+  */
+  rotate:
+    var(--flower-rotate, 0deg) !important;
+
+
+  visibility:
+    visible !important;
+
+
+  /*
+    Semua motion mengikuti scroll.
+    Tidak ada animation timer yang jalan sendiri.
+  */
+  transition:
+    none !important;
+
+
+  will-change:
+    opacity,
+    translate,
+    scale,
+    rotate !important;
+
+
+  backface-visibility:
+    hidden;
 }
