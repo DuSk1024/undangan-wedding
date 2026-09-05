@@ -4158,7 +4158,7 @@ function makeCanvasFullScreen() {
 
         document
             .querySelector(
-                '.card-canvas'
+                '.main-wrapper .card-canvas'
             );
 
 
