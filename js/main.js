@@ -2952,6 +2952,21 @@ document.addEventListener('DOMContentLoaded', function () {
             let wheelRaf =
                 0;
 
+            window.weddingScrollState = {
+                scrollContainer,
+                get targetScroll() {
+                    return targetScroll;
+                },
+                set targetScroll(value) {
+                    targetScroll = value;
+                },
+                get wheelRaf() {
+                    return wheelRaf;
+                },
+                set wheelRaf(value) {
+                    wheelRaf = value;
+                }
+            };
 
             function maxScrollTop() {
 
@@ -4406,32 +4421,51 @@ document
 
 function scrollToTop() {
 
-
     const scrollContainer =
+        document.getElementById(
+            'scrollContainer'
+        );
 
-        document
-            .getElementById(
-                'scrollContainer'
-            );
-
-
-    if (
-        !scrollContainer
-    ) {
-
+    if (!scrollContainer) {
         return;
     }
 
+    if (
+        window.weddingScrollState
+    ) {
 
-    scrollContainer
-        .scrollTo(
-            {
+        window.weddingScrollState
+            .targetScroll = 0;
 
-                top:
-                    0,
+        if (
+            window.weddingScrollState.wheelRaf
+        ) {
 
-                behavior:
-                    'smooth'
-            }
-        );
+            cancelAnimationFrame(
+                window.weddingScrollState.wheelRaf
+            );
+
+            window.weddingScrollState
+                .wheelRaf = 0;
+        }
+    }
+
+    scrollContainer.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+    setTimeout(() => {
+
+        scrollContainer.scrollTop = 0;
+
+        if (
+            window.weddingScrollState
+        ) {
+
+            window.weddingScrollState
+                .targetScroll = 0;
+        }
+
+    }, 700);
 }
