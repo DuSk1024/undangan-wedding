@@ -1,6 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // ============================================================
+    // DETECT ANDROID
+    // ============================================================
+
+    const isAndroid =
+        /Android/i.test(
+            navigator.userAgent
+        );
+
+    if (isAndroid) {
+
+        document.documentElement
+            .classList
+            .add('android-device');
+
+    }
+
+    // ============================================================
     // 1. AUTO FIT COVER CARD
     // ============================================================
     // Ini mempertahankan ukuran/desain cover index lama.
