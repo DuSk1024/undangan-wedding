@@ -240,6 +240,60 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(
             'scrollContainer'
         );
+    
+        // ============================================================
+        // AUDIO KHUSUS MOBILE
+        // ============================================================
+
+        const weddingAudio =
+            document.getElementById(
+                'weddingMusic'
+            );
+
+        const musicToggleBtn =
+            document.getElementById(
+                'musicToggleBtn'
+            );
+
+
+        function startWeddingMusicFromUserGesture() {
+
+            if (!weddingAudio) {
+                return;
+            }
+
+            weddingAudio.muted = false;
+            weddingAudio.volume = 0.3;
+
+            const playPromise =
+                weddingAudio.play();
+
+
+            if (
+                playPromise &&
+                typeof playPromise.then === 'function'
+            ) {
+
+                playPromise
+                    .then(function () {
+
+                        if (musicToggleBtn) {
+                            musicToggleBtn
+                                .classList
+                                .remove('paused');
+                        }
+
+                    })
+                    .catch(function (error) {
+
+                        console.log(
+                            'Audio belum bisa diputar:',
+                            error
+                        );
+
+                    });
+            }
+        }
 
 
     let isOpening =
@@ -272,6 +326,9 @@ document.addEventListener("DOMContentLoaded", function () {
             ) {
 
                 event.preventDefault();
+
+                // LANGSUNG PLAY MUSIK DARI KLIK USER
+                startWeddingMusicFromUserGesture();
 
 
                 // Cegah double click saat animasi sedang berjalan.
