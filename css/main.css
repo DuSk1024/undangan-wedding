@@ -2489,7 +2489,7 @@ html.android-device
 
     .single-continuous-section
     > .scroll-target-block:nth-child(2) {
-      margin-top: -70px !important;
+      margin-top: 80px !important;
     }
 
   }
