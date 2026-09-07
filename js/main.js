@@ -574,380 +574,445 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         // ========================================================
-        // COVER ENTRANCE
+        // COVER ENTRANCE — SETELAH OPEN INVITATION
         // ========================================================
 
-        requestAnimationFrame(
-            () => {
+        let mainCoverEntranceStarted =
+            false;
 
-                requestAnimationFrame(
-                    () => {
 
+        function startMainCoverEntrance() {
 
-                        const weddingSubtitle =
+            // Mencegah entrance berjalan dua kali
+            if (
+                mainCoverEntranceStarted
+            ) {
 
-                            firstSection
+                return;
+            }
 
-                                ?
 
-                                firstSection
-                                    .querySelector(
-                                        '.text-subtitle'
-                                    )
+            mainCoverEntranceStarted =
+                true;
 
-                                :
 
-                                null;
+            // ========================================================
+            // RESET STATE AWAL
+            // ========================================================
 
+            coverTextElements
+                .forEach(
+                    (
+                        element
+                    ) => {
 
-                        const coupleName =
-
-                            firstSection
-
-                                ?
-
-                                firstSection
-                                    .querySelector(
-                                        '.couple-name'
-                                    )
-
-                                :
-
-                                null;
-
-
-                        const countdownTitle =
-
-                            firstSection
-
-                                ?
-
-                                firstSection
-                                    .querySelector(
-                                        '.countdown-title'
-                                    )
-
-                                :
-
-                                null;
-
-
-                        const countdownDisplay =
-
-                            firstSection
-
-                                ?
-
-                                firstSection
-                                    .querySelector(
-                                        '.countdown-display'
-                                    )
-
-                                :
-
-                                null;
-
-
-                        const saveDate =
-
-                            firstSection
-
-                                ?
-
-                                firstSection
-                                    .querySelector(
-                                        '.btn-olive-pill'
-                                    )
-
-                                :
-
-                                null;
-
-
-                        if (
-                            weddingSubtitle
-                        ) {
-
-                            setTimeout(
-                                () => {
-
-                                    weddingSubtitle
-                                        .classList
-                                        .add(
-                                            'is-visible'
-                                        );
-
-                                },
-                                50
-                            );
-                        }
-
-
-                        if (
-                            coupleName
-                        ) {
-
-                            setTimeout(
-                                () => {
-
-                                    coupleName
-                                        .classList
-                                        .add(
-                                            'is-visible'
-                                        );
-
-                                },
-                                130
-                            );
-                        }
-
-
-                        if (
-                            coverPhoto
-                        ) {
-
-                            setTimeout(
-                                () => {
-
-                                    coverPhoto
-                                        .classList
-                                        .add(
-                                            'is-visible'
-                                        );
-
-                                },
-                                230
-                            );
-                        }
-
-
-                        if (
-                            countdownTitle
-                        ) {
-
-                            setTimeout(
-                                () => {
-
-                                    countdownTitle
-                                        .classList
-                                        .add(
-                                            'is-visible'
-                                        );
-
-                                },
-                                320
-                            );
-                        }
-
-
-                        if (
-                            countdownDisplay
-                        ) {
-
-                            setTimeout(
-                                () => {
-
-                                    countdownDisplay
-                                        .classList
-                                        .add(
-                                            'is-visible'
-                                        );
-
-                                },
-                                390
-                            );
-                        }
-
-
-                        if (
-                            saveDate
-                        ) {
-
-                            setTimeout(
-                                () => {
-
-                                    saveDate
-                                        .classList
-                                        .add(
-                                            'is-visible'
-                                        );
-
-                                },
-                                470
-                            );
-                        }
-
-
-                        coverFlowers
-                            .forEach(
-                                (
-                                    flower,
-                                    index
-                                ) => {
-
-                                    setTimeout(
-                                        () => {
-
-                                            flower
-                                                .classList
-                                                .add(
-                                                    'is-visible'
-                                                );
-
-                                        },
-
-                                        300 +
-
-                                        index *
-                                        70
-                                    );
-                                }
-                            );
-
-
-                        coverTextElements
-                            .forEach(
-                                (
-                                    element
-                                ) => {
-
-                                    if (
-                                        element ===
-                                        weddingSubtitle
-                                        ||
-                                        element ===
-                                        coupleName
-                                        ||
-                                        element ===
-                                        countdownTitle
-                                        ||
-                                        element ===
-                                        countdownDisplay
-                                        ||
-                                        element ===
-                                        saveDate
-                                    ) {
-
-                                        return;
-                                    }
-
-
-                                    setTimeout(
-                                        () => {
-
-                                            element
-                                                .classList
-                                                .add(
-                                                    'is-visible'
-                                                );
-
-                                        },
-                                        390
-                                    );
-                                }
+                        element
+                            .classList
+                            .remove(
+                                'is-visible'
                             );
                     }
                 );
-            }
-        );
 
 
-        setTimeout(
-            () => {
+            if (
+                coverPhoto
+            ) {
 
-                coverTextElements
-                    .forEach(
-                        (
-                            element
-                        ) => {
-
-                            textFadeObserver
-                                .observe(
-                                    element
-                                );
-                        }
+                coverPhoto
+                    .classList
+                    .remove(
+                        'is-visible'
                     );
-
-            },
-            1100
-        );
+            }
 
 
-        if (
-            coverPhoto
-        ) {
-
-            const coverPhotoObserver =
-
-                new IntersectionObserver(
-
+            coverFlowers
+                .forEach(
                     (
-                        entries
+                        flower
                     ) => {
 
-                        entries
-                            .forEach(
-                                (
-                                    entry
-                                ) => {
+                        flower
+                            .classList
+                            .remove(
+                                'is-visible'
+                            );
+                    }
+                );
 
-                                    if (
-                                        entry
-                                            .isIntersecting
-                                    ) {
 
-                                        entry
-                                            .target
+            // ========================================================
+            // TUNGGU BROWSER RENDER KONDISI AWAL
+            // ========================================================
+
+            requestAnimationFrame(
+                () => {
+
+                    requestAnimationFrame(
+                        () => {
+
+                            const weddingSubtitle =
+                                firstSection
+                                    ? firstSection.querySelector(
+                                        '.text-subtitle'
+                                    )
+                                    : null;
+
+
+                            const coupleName =
+                                firstSection
+                                    ? firstSection.querySelector(
+                                        '.couple-name'
+                                    )
+                                    : null;
+
+
+                            const countdownTitle =
+                                firstSection
+                                    ? firstSection.querySelector(
+                                        '.countdown-title'
+                                    )
+                                    : null;
+
+
+                            const countdownDisplay =
+                                firstSection
+                                    ? firstSection.querySelector(
+                                        '.countdown-display'
+                                    )
+                                    : null;
+
+
+                            const saveDate =
+                                firstSection
+                                    ? firstSection.querySelector(
+                                        '.btn-olive-pill'
+                                    )
+                                    : null;
+
+
+                            // =================================================
+                            // THE WEDDING OF
+                            // =================================================
+
+                            if (
+                                weddingSubtitle
+                            ) {
+
+                                setTimeout(
+                                    () => {
+
+                                        weddingSubtitle
                                             .classList
                                             .add(
                                                 'is-visible'
                                             );
 
-                                    } else {
+                                    },
+                                    30
+                                );
+                            }
 
-                                        entry
-                                            .target
+
+                            // =================================================
+                            // STEPHEN & DESSY
+                            // =================================================
+
+                            if (
+                                coupleName
+                            ) {
+
+                                setTimeout(
+                                    () => {
+
+                                        coupleName
                                             .classList
-                                            .remove(
+                                            .add(
                                                 'is-visible'
                                             );
+
+                                    },
+                                    70
+                                );
+                            }
+
+
+                            // =================================================
+                            // FOTO UTAMA
+                            // =================================================
+
+                            if (
+                                coverPhoto
+                            ) {
+
+                                setTimeout(
+                                    () => {
+
+                                        coverPhoto
+                                            .classList
+                                            .add(
+                                                'is-visible'
+                                            );
+
+                                    },
+                                    110
+                                );
+                            }
+
+
+                            // =================================================
+                            // BUNGA
+                            // =================================================
+
+                            coverFlowers
+                                .forEach(
+                                    (
+                                        flower,
+                                        flowerIndex
+                                    ) => {
+
+                                        setTimeout(
+                                            () => {
+
+                                                flower
+                                                    .classList
+                                                    .add(
+                                                        'is-visible'
+                                                    );
+
+                                            },
+                                            120 +
+                                            flowerIndex *
+                                            30
+                                        );
                                     }
-                                }
-                            );
-                    },
-
-                    {
-
-                        root:
-                            scrollContainer,
+                                );
 
 
-                        threshold:
-                            [
-                                0,
-                                0.02
-                            ],
+                            // =================================================
+                            // COUNTDOWN TIMER TEXT
+                            // =================================================
+
+                            if (
+                                countdownTitle
+                            ) {
+
+                                setTimeout(
+                                    () => {
+
+                                        countdownTitle
+                                            .classList
+                                            .add(
+                                                'is-visible'
+                                            );
+
+                                    },
+                                    200
+                                );
+                            }
 
 
-                        rootMargin:
-                            '0px'
-                    }
-                );
+                            // =================================================
+                            // COUNTDOWN BOX
+                            // =================================================
 
+                            if (
+                                countdownDisplay
+                            ) {
+
+                                setTimeout(
+                                    () => {
+
+                                        countdownDisplay
+                                            .classList
+                                            .add(
+                                                'is-visible'
+                                            );
+
+                                    },
+                                    240
+                                );
+                            }
+
+
+                            // =================================================
+                            // SAVE THE DATE
+                            // =================================================
+
+                            if (
+                                saveDate
+                            ) {
+
+                                setTimeout(
+                                    () => {
+
+                                        saveDate
+                                            .classList
+                                            .add(
+                                                'is-visible'
+                                            );
+
+                                    },
+                                    640
+                                );
+                            }
+
+
+                            // =================================================
+                            // ELEMEN LAIN DI SECTION PERTAMA
+                            // =================================================
+
+                            coverTextElements
+                                .forEach(
+                                    (
+                                        element
+                                    ) => {
+
+                                        if (
+                                            element === weddingSubtitle ||
+                                            element === coupleName ||
+                                            element === countdownTitle ||
+                                            element === countdownDisplay ||
+                                            element === saveDate
+                                        ) {
+
+                                            return;
+                                        }
+
+
+                                        setTimeout(
+                                            () => {
+
+                                                element
+                                                    .classList
+                                                    .add(
+                                                        'is-visible'
+                                                    );
+
+                                            },
+                                            540
+                                        );
+                                    }
+                                );
+                        }
+                    );
+                }
+            );
+
+
+            // ========================================================
+            // SETELAH ENTRANCE SELESAI,
+            // OBSERVER BOLEH MENGAMBIL ALIH LAGI
+            // ========================================================
 
             setTimeout(
                 () => {
 
-                    coverPhotoObserver
-                        .observe(
-                            coverPhoto
+                    coverTextElements
+                        .forEach(
+                            (
+                                element
+                            ) => {
+
+                                textFadeObserver
+                                    .observe(
+                                        element
+                                    );
+                            }
                         );
 
                 },
-                1100
+                1400
             );
+
+
+            // ========================================================
+            // OBSERVER FOTO
+            // ========================================================
+
+            if (
+                coverPhoto
+            ) {
+
+                const coverPhotoObserver =
+                    new IntersectionObserver(
+
+                        (
+                            entries
+                        ) => {
+
+                            entries
+                                .forEach(
+                                    (
+                                        entry
+                                    ) => {
+
+                                        if (
+                                            entry.isIntersecting
+                                        ) {
+
+                                            entry.target
+                                                .classList
+                                                .add(
+                                                    'is-visible'
+                                                );
+
+                                        } else {
+
+                                            entry.target
+                                                .classList
+                                                .remove(
+                                                    'is-visible'
+                                                );
+                                        }
+                                    }
+                                );
+                        },
+
+                        {
+                            root:
+                                scrollContainer,
+
+                            threshold:
+                                [
+                                    0,
+                                    0.02
+                                ],
+
+                            rootMargin:
+                                '0px'
+                        }
+                    );
+
+
+                setTimeout(
+                    () => {
+
+                        coverPhotoObserver
+                            .observe(
+                                coverPhoto
+                            );
+
+                    },
+                    1400
+                );
+            }
         }
 
+
+        // ========================================================
+        // TUNGGU EVENT DARI INDEX.JS
+        // ========================================================
+
+        document.addEventListener(
+            'invitation:main-enter',
+            startMainCoverEntrance,
+            {
+                once:
+                    true
+            }
+        );
 
         // ========================================================
         // B. BACKGROUND
@@ -1758,6 +1823,15 @@ document.addEventListener('DOMContentLoaded', function () {
             (
                 groupConfig
             ) => {
+
+                // COVER punya animasi entrance sendiri
+                // Jangan diproses oleh cinematic flower system
+                if (
+                    groupConfig.name === 'cover'
+                ) {
+                    return;
+                }
+
 
                 if (
                     !groupConfig.container

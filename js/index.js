@@ -479,6 +479,13 @@ document.addEventListener("DOMContentLoaded", function () {
             'invitation-open'
         );
 
+        // MAIN entrance baru dimulai setelah cover selesai naik
+        document.dispatchEvent(
+            new CustomEvent(
+                'invitation:main-enter'
+            )
+        );
+
 
         // URL tetap index yang sama.
         // Tidak pindah ke main.html dan tidak reload.
