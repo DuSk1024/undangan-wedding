@@ -2479,3 +2479,18 @@ html.android-device
     margin-top: 120px !important;
 
 }
+
+/* ==========================================================
+   FIX JARAK SECTION KHUSUS IPHONE / IOS SAFARI
+========================================================== */
+
+@supports (-webkit-touch-callout: none) {
+  @media screen and (max-width: 576px) {
+
+    .single-continuous-section
+    > .scroll-target-block:nth-child(2) {
+      margin-top: -70px !important;
+    }
+
+  }
+}
