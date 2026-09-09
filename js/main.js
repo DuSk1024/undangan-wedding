@@ -11,9 +11,60 @@ const supabaseClient = supabase.createClient(
 
 
 // ==========================================
+// EARLY MEDIA HINTS
+// ==========================================
+// Script berada di akhir HTML, jadi DOM gambar sudah tersedia.
+// Async decode mengurangi kemungkinan decode foto besar memblok main thread.
+document
+    .querySelectorAll('#mainPageStage img')
+    .forEach((img) => {
+        img.decoding = 'async';
+    });
+
+// Semua gambar MAIN yang berada setelah section pertama boleh lazy-load.
+// Section pertama tetap eager supaya saat cover naik tampilannya langsung siap.
+const firstMainBlockEarly =
+    document.querySelector('#mainPageStage .scroll-target-block');
+
+document
+    .querySelectorAll('#mainPageStage .scroll-target-block img')
+    .forEach((img) => {
+        if (
+            firstMainBlockEarly &&
+            firstMainBlockEarly.contains(img)
+        ) {
+            return;
+        }
+
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        try {
+            img.fetchPriority = 'low';
+        } catch (_) {
+            // Browser lama cukup mengabaikan hint ini.
+        }
+    });
+
+
+// ==========================================
 // 2. MAIN INIT
 // ==========================================
 document.addEventListener('DOMContentLoaded', function () {
+
+    // ==========================================================
+    // PERFORMANCE: MAIN baru diinisialisasi saat user menekan
+    // Open Invitation. Ini mencegah observer, layout calculation,
+    // animasi scroll, dan request database bekerja di balik cover.
+    // ==========================================================
+    let mainExperienceInitialized = false;
+
+    function initializeMainExperience() {
+
+        if (mainExperienceInitialized) {
+            return;
+        }
+
+        mainExperienceInitialized = true;
 
     // ==========================================
     // BACKGROUND PERTAMA
@@ -1044,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         .style
                         .setProperty(
                             'visibility',
-                            'visible',
+                            'hidden',
                             'important'
                         );
 
@@ -1122,10 +1173,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
 
+            const previous =
+                currentBgId
+                    ? document.getElementById(currentBgId)
+                    : null;
+
+
             currentBgId =
                 nextId;
 
 
+            // Hanya target + background sebelumnya yang tetap dirender.
+            // Cross-fade visual tetap sama, tetapi 5-6 layer gambar fullscreen
+            // lain tidak lagi ikut dikomposisi GPU di HP.
             bgSlides
                 .forEach(
                     (
@@ -1135,20 +1195,16 @@ document.addEventListener('DOMContentLoaded', function () {
                         slide
                             .style
                             .setProperty(
-                                'visibility',
-                                'visible',
-                                'important'
-                            );
-
-
-                        slide
-                            .style
-                            .setProperty(
                                 'transform',
                                 'none',
                                 'important'
                             );
 
+                        slide
+                            .classList
+                            .remove(
+                                'bg-fading-out'
+                            );
 
                         if (
                             target &&
@@ -1157,11 +1213,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         ) {
 
                             slide
+                                .style
+                                .setProperty(
+                                    'visibility',
+                                    'visible',
+                                    'important'
+                                );
+
+                            slide
                                 .classList
                                 .add(
                                     'active'
                                 );
-
 
                             slide
                                 .style
@@ -1171,6 +1234,56 @@ document.addEventListener('DOMContentLoaded', function () {
                                     'important'
                                 );
 
+                        } else if (
+                            previous &&
+                            slide === previous
+                        ) {
+
+                            slide
+                                .classList
+                                .remove(
+                                    'active'
+                                );
+
+                            slide
+                                .classList
+                                .add(
+                                    'bg-fading-out'
+                                );
+
+                            slide
+                                .style
+                                .setProperty(
+                                    'visibility',
+                                    'visible',
+                                    'important'
+                                );
+
+                            slide
+                                .style
+                                .setProperty(
+                                    'opacity',
+                                    '0',
+                                    'important'
+                                );
+
+                            setTimeout(
+                                () => {
+                                    if (
+                                        !slide.classList.contains('active') &&
+                                        slide.classList.contains('bg-fading-out')
+                                    ) {
+                                        slide.classList.remove('bg-fading-out');
+                                        slide.style.setProperty(
+                                            'visibility',
+                                            'hidden',
+                                            'important'
+                                        );
+                                    }
+                                },
+                                620
+                            );
+
                         } else {
 
                             slide
@@ -1179,12 +1292,19 @@ document.addEventListener('DOMContentLoaded', function () {
                                     'active'
                                 );
 
-
                             slide
                                 .style
                                 .setProperty(
                                     'opacity',
                                     '0',
+                                    'important'
+                                );
+
+                            slide
+                                .style
+                                .setProperty(
+                                    'visibility',
+                                    'hidden',
                                     'important'
                                 );
                         }
@@ -1197,12 +1317,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // BACKGROUND FOCUS
         // ========================================================
 
-        function getSectionAtViewportFocus() {
+        function getSectionAtViewportFocus(
+            containerRect
+        ) {
 
-            const containerRect =
-
-                scrollContainer
-                    .getBoundingClientRect();
+            containerRect =
+                containerRect ||
+                scrollContainer.getBoundingClientRect();
 
 
             const focusY =
@@ -1284,11 +1405,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        function updateBackgroundFromScroll() {
+        function updateBackgroundFromScroll(
+            containerRect
+        ) {
 
             const section =
 
-                getSectionAtViewportFocus();
+                getSectionAtViewportFocus(
+                    containerRect
+                );
 
 
             const bgId =
@@ -2085,13 +2210,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // ========================================================
 
         function getFlowerGroupTarget(
-            group
+            group,
+            viewport
         ) {
 
-            const viewport =
-
-                scrollContainer
-                    .getBoundingClientRect();
+            viewport =
+                viewport ||
+                scrollContainer.getBoundingClientRect();
 
 
             // ========================================================
@@ -2511,6 +2636,15 @@ document.addEventListener('DOMContentLoaded', function () {
             1400;
 
 
+        // Cover flower sudah memakai entrance terpisah dan memang tidak
+        // masuk flowerGroups. Jangan paksa render-loop 1.4 detik kalau
+        // tidak ada group intro yang perlu dianimasikan.
+        const hasIntroFlowerGroups =
+            flowerGroups.some(
+                (group) => group.intro
+            );
+
+
         // ========================================================
         // F7. FRAME TIME
         // ========================================================
@@ -2536,7 +2670,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function updateFlowers(
             now =
-                performance.now()
+                performance.now(),
+            viewportRect =
+                scrollContainer.getBoundingClientRect()
         ) {
 
             // =========================================
@@ -2666,7 +2802,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         rawTarget =
 
                             getFlowerGroupTarget(
-                                group
+                                group,
+                                viewportRect
                             );
                     }
 
@@ -2852,6 +2989,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // =========================================
 
             if (
+                hasIntroFlowerGroups &&
                 introAge <
                 flowerIntroMax
             ) {
@@ -2919,7 +3057,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 false;
 
 
-            updateBackgroundFromScroll();
+            // Satu geometry read per frame untuk viewport scroll.
+            // Mengurangi layout reads berulang tanpa mengubah posisi animasi.
+            const viewportRect =
+                scrollContainer.getBoundingClientRect();
+
+            updateBackgroundFromScroll(
+                viewportRect
+            );
 
 
             /*
@@ -2929,7 +3074,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const flowersStillMoving =
 
                 updateFlowers(
-                    now
+                    now,
+                    viewportRect
                 );
 
 
@@ -3259,8 +3405,29 @@ document.addEventListener('DOMContentLoaded', function () {
     // ==========================================
     // LOAD UCAPAN
     // ==========================================
+    // Jangan rebut CPU/network saat cover baru mulai naik.
+    // Data ucapan tetap otomatis dimuat, hanya dipindah ke idle time.
+    const loadWishesWhenIdle = function () {
+        fetchWishes();
+    };
 
-    fetchWishes();
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadWishesWhenIdle, { timeout: 1800 });
+    } else {
+        setTimeout(loadWishesWhenIdle, 700);
+    }
+    }
+
+    document.addEventListener(
+        'invitation:main-prep',
+        initializeMainExperience,
+        { once: true }
+    );
+
+    // Fallback: kalau halaman dibuka langsung dalam state invitation-open.
+    if (document.body.classList.contains('invitation-open')) {
+        initializeMainExperience();
+    }
 });
 
 

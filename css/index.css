@@ -329,3 +329,24 @@ body.invitation-open #pageWrapper {
         will-change: auto;
     }
 }
+
+/* ==========================================================
+   PERFORMANCE GUARD — MOBILE/ALL DEVICES
+   Tidak mengubah desain. MAIN tidak dipaint sebelum user
+   menekan Open Invitation, lalu kembali normal saat transisi.
+========================================================== */
+body:not(.invitation-preparing):not(.invitation-opening):not(.invitation-open) #mainPageStage {
+    visibility: hidden !important;
+    content-visibility: hidden;
+}
+
+body:not(.invitation-preparing):not(.invitation-opening):not(.invitation-open) #mainPageStage * {
+    animation-play-state: paused !important;
+}
+
+body.invitation-preparing #mainPageStage,
+body.invitation-opening #mainPageStage,
+body.invitation-open #mainPageStage {
+    visibility: visible !important;
+    content-visibility: visible;
+}

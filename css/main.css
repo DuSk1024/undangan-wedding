@@ -2494,3 +2494,32 @@ html.android-device
 
   }
 }
+/* ==========================================================
+   PERFORMANCE OPTIMIZATION — VISUAL TETAP SAMA
+========================================================== */
+
+/* Background fullscreen yang tidak aktif tidak perlu ikut dicomposite. */
+.bg-slide {
+  visibility: hidden;
+  will-change: auto !important;
+}
+
+.bg-slide.active,
+.bg-slide.bg-fading-out {
+  visibility: visible;
+}
+
+.bg-slide.active {
+  will-change: opacity !important;
+}
+
+/* Jangan reserve layer GPU backdrop-filter permanen di kartu yang jauh
+   dari viewport. Efek blur/background/border tetap sama. */
+@media screen and (max-width: 576px) {
+  .event-clean-card,
+  .couple-profile-card,
+  .verse-clean-card,
+  .gallery-clean-card {
+    will-change: auto !important;
+  }
+}

@@ -1,3 +1,10 @@
+// Kurangi kompetisi network saat halaman pertama kali dibuka.
+// Musik tetap diputar dari user gesture saat Open Invitation ditekan.
+const earlyWeddingAudio = document.getElementById('weddingMusic');
+if (earlyWeddingAudio) {
+    earlyWeddingAudio.preload = 'metadata';
+}
+
 document.addEventListener("DOMContentLoaded", function () {
 
     // ============================================================
@@ -377,9 +384,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
+                // Siapkan MAIN hanya saat benar-benar dibutuhkan.
+                // Layout/observer/animasi berat tidak lagi bekerja sejak page load.
+                document.body.classList.add(
+                    'invitation-preparing'
+                );
+
+                document.dispatchEvent(
+                    new CustomEvent(
+                        'invitation:main-prep'
+                    )
+                );
+
                 document.body.classList.add(
                     'invitation-opening'
                 );
+
+                // Beri browser satu frame untuk menyiapkan layer MAIN.
+                // Durasi/easing animasi cover tetap 0.95s + power3.inOut.
+                requestAnimationFrame(function () {
 
 
                 // =================================================
@@ -448,6 +471,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             finishOpening
                     }
                 );
+
+                });
             }
         );
     }
@@ -475,9 +500,16 @@ document.addEventListener("DOMContentLoaded", function () {
             'invitation-opening'
         );
 
+        document.body.classList.remove(
+            'invitation-preparing'
+        );
+
         document.body.classList.add(
             'invitation-open'
         );
+
+        // Layer cover tidak perlu lagi mempertahankan alokasi GPU.
+        pageWrapper.style.willChange = 'auto';
 
         // MAIN entrance baru dimulai setelah cover selesai naik
         document.dispatchEvent(
