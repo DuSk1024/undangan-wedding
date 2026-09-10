@@ -138,91 +138,117 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ============================================================
-    // 3. ENTRANCE COVER
+    // 3. ENTRANCE COVER — CINEMATIC STAGGER
     // ============================================================
-    // Sama seperti index lama:
-    // foto muncul halus, lalu konten cover masuk.
-    //
-    // Ini BUKAN transisi Open Invitation.
-    // Jadi desain/entrance cover tetap terasa sama.
-    if (
-        typeof gsap !==
-        'undefined'
-    ) {
 
+    if (typeof gsap !== 'undefined') {
+
+        // Kondisi awal FOTO
+        gsap.set("#photoBg", {
+            scale: 1.08
+        });
+
+        // THE WEDDING OF
+        gsap.set(".cover-text-subtitle", {
+            opacity: 0,
+            y: -12
+        });
+
+        // STEPHEN & DESSY
+        gsap.set(".cover-couple-name", {
+            opacity: 0,
+            y: 18,
+            scale: 0.92
+        });
+
+        // INFORMASI TAMU
         gsap.set(
+            ".guest-label, .guest-name, .guest-sub",
+            {
+                opacity: 0,
+                y: 14
+            }
+        );
+
+        // TOMBOL
+        gsap.set("#btnOpenInvitation", {
+            opacity: 0,
+            y: 18,
+            scale: 0.94
+        });
+
+
+        const introTimeline = gsap.timeline({
+            defaults: {
+                ease: "power2.out"
+            }
+        });
+
+
+        // 1. Background pelan-pelan zoom out
+        introTimeline.to(
             "#photoBg",
             {
-                scale:
-                    1.05,
-
-                opacity:
-                    0
-            }
+                scale: 1,
+                duration: 1.5,
+                ease: "power2.out"
+            },
+            0
         );
 
 
-        gsap.set(
-            "#mainContainer",
+        // 2. "The Wedding Of" turun sedikit
+        introTimeline.to(
+            ".cover-text-subtitle",
             {
-                opacity:
-                    0,
-
-                y:
-                    15
-            }
+                opacity: 1,
+                y: 0,
+                duration: 0.7
+            },
+            0.25
         );
 
 
-        const introTimeline =
-            gsap.timeline(
-                {
-                    defaults:
-                    {
-                        ease:
-                            "power2.out"
-                    }
-                }
-            );
+        // 3. Nama pasangan muncul lebih mewah
+        introTimeline.to(
+            ".cover-couple-name",
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.95,
+                ease: "power3.out"
+            },
+            0.45
+        );
 
 
-        introTimeline
+        // 4. Guest info muncul satu-satu
+        introTimeline.to(
+            ".guest-label, .guest-name, .guest-sub",
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.65,
+                stagger: 0.10,
+                ease: "power2.out"
+            },
+            0.85
+        );
 
-            .to(
-                "#photoBg",
-                {
-                    opacity:
-                        1,
 
-                    scale:
-                        1,
-
-                    duration:
-                        1.0,
-
-                    ease:
-                        "power2.out"
-                }
-            )
-
-            .to(
-                "#mainContainer",
-                {
-                    opacity:
-                        1,
-
-                    y:
-                        0,
-
-                    duration:
-                        0.8,
-
-                    ease:
-                        "power2.out"
-                },
-
-                "-=0.5"
-            );
+        // 5. Open Invitation terakhir
+        introTimeline.to(
+            "#btnOpenInvitation",
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.75,
+                ease: "back.out(1.3)"
+            },
+            1.15
+        );
     }
 
 
@@ -414,21 +440,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 ) {
 
                     pageWrapper.style.transition =
-                        'transform 0.95s cubic-bezier(0.65, 0, 0.35, 1)';
+                        'opacity 0.82s ease-in-out';
 
-                    pageWrapper.style.transform =
-                        'translate3d(0, -100%, 0)';
+                    mainPageStage.style.transition =
+                        'opacity 0.82s ease-in-out';
 
+                    pageWrapper.style.opacity = '0';
+                    mainPageStage.style.opacity = '1';
 
                     setTimeout(
                         function () {
-
                             finishOpening();
-
                         },
-                        950
+                        820
                     );
-
 
                     return;
                 }
@@ -449,27 +474,50 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Tidak ada opacity/autoAlpha/fade.
                 // =================================================
 
-                gsap.to(
+                // ================================================
+                // PERSIAPKAN MAIN SEBELUM CROSSFADE
+                // ================================================
+                const firstMainSection =
+                    mainPageStage.querySelector('.scroll-target-block');
+
+                if (firstMainSection) {
+
+                    firstMainSection
+                        .querySelectorAll(
+                            '.video-fade-text, .video-cover-photo, .video-cover-flower'
+                        )
+                        .forEach(function (element) {
+
+                            // MAIN harus sudah dalam bentuk final
+                            // sebelum opacity MAIN mulai terlihat.
+                            element.style.transition = 'none';
+
+                            element.classList.add('is-visible');
+                        });
+                }
+
+
+                // ================================================
+                // CROSSFADE PERSIS SEPERTI VIDEO
+                // ================================================
+                gsap.set(mainPageStage, {
+                    opacity: 1
+                });
+
+                gsap.timeline({
+                    onComplete: finishOpening
+                })
+
+                .to(
                     pageWrapper,
                     {
-                        yPercent:
-                            -100,
-
-                        duration:
-                            0.95,
-
-                        ease:
-                            "power3.inOut",
-
-                        force3D:
-                            true,
-
-                        overwrite:
-                            true,
-
-                        onComplete:
-                            finishOpening
-                    }
+                        yPercent: -100,
+                        opacity: 0,
+                        duration: 1.3,
+                        ease: "power2.inOut",
+                        force3D: true
+                    },
+                    0
                 );
 
                 });
@@ -510,14 +558,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Layer cover tidak perlu lagi mempertahankan alokasi GPU.
         pageWrapper.style.willChange = 'auto';
-
-        // MAIN entrance baru dimulai setelah cover selesai naik
-        document.dispatchEvent(
-            new CustomEvent(
-                'invitation:main-enter'
-            )
-        );
-
 
         // URL tetap index yang sama.
         // Tidak pindah ke main.html dan tidak reload.

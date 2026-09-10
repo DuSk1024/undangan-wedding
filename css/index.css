@@ -255,7 +255,10 @@ html, body {
    - Yang bergerak hanya seluruh layer cover ke ATAS.
 ========================================================== */
 
-/* MAIN: sudah ada tepat di belakang cover */
+/* ==========================================================
+   CROSSFADE COVER → MAIN
+========================================================== */
+
 #mainPageStage {
     position: fixed;
     inset: 0;
@@ -265,20 +268,23 @@ html, body {
 
     z-index: 1;
 
-    /* PENTING: tidak fade */
-    opacity: 1 !important;
-    visibility: visible !important;
+    opacity: 0;
+    visibility: visible;
 
     pointer-events: none;
     overflow: hidden;
+
     background: transparent;
 
     transform: translate3d(0, 0, 0);
+
+    will-change: opacity;
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 }
 
-/* COVER: satu layer utuh di atas main */
+
 #pageWrapper {
     position: fixed !important;
     inset: 0 !important;
@@ -288,12 +294,32 @@ html, body {
 
     z-index: 10000 !important;
 
-    /* Posisi awal persis seperti desain index */
+    opacity: 1;
+
     transform: translate3d(0, 0, 0);
 
-    will-change: transform;
+    will-change: transform, opacity;
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+}
+
+
+body.invitation-opening #mainPageStage {
+    pointer-events: none;
+}
+
+
+body.invitation-open #mainPageStage {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+body.invitation-open #pageWrapper {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 /*
