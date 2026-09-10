@@ -304,6 +304,49 @@ html, body {
     -webkit-backface-visibility: hidden;
 }
 
+/* ==========================================================
+   CINEMATIC TRANSITION OVERLAY
+========================================================== */
+
+#pageWrapper::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 99999;
+
+    pointer-events: none;
+
+    /*
+       Cahaya putih lembut dari bawah.
+       Bukan flash putih keras.
+    */
+    background:
+        linear-gradient(
+            to top,
+            rgba(255, 255, 255, 0.34) 0%,
+            rgba(255, 255, 255, 0.12) 35%,
+            rgba(255, 255, 255, 0.02) 70%,
+            transparent 100%
+        );
+
+    opacity: var(--veil-opacity, 0);
+
+    will-change: opacity;
+}
+
+
+/* Optimasi selama animasi berlangsung */
+
+body.invitation-opening #mainContainer {
+    will-change: transform, opacity;
+}
+
+body.invitation-opening #photoBg {
+    will-change: transform;
+}
+
 
 body.invitation-opening #mainPageStage {
     pointer-events: none;

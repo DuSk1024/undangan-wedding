@@ -497,27 +497,140 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                // ================================================
-                // CROSSFADE PERSIS SEPERTI VIDEO
-                // ================================================
+                // =================================================
+                // PREMIUM VEIL REVEAL
+                // Cover terasa TERANGKAT, bukan slide halaman.
+                // =================================================
+
+                const coverItems =
+                    ".cover-text-subtitle, " +
+                    ".cover-couple-name, " +
+                    ".guest-label, " +
+                    ".guest-name, " +
+                    ".guest-sub, " +
+                    "#btnOpenInvitation";
+
+
+                // MAIN sudah siap di belakang.
+                // Sedikit redup supaya transisi punya depth.
                 gsap.set(mainPageStage, {
+                    opacity: 0.82
+                });
+
+
+                // COVER awalnya full.
+                gsap.set(pageWrapper, {
+                    clipPath: "inset(0% 0% 0% 0%)",
+                    yPercent: 0,
                     opacity: 1
                 });
 
-                gsap.timeline({
-                    onComplete: finishOpening
-                })
 
-                .to(
-                    pageWrapper,
+                const openTimeline = gsap.timeline({
+                    onComplete: finishOpening
+                });
+
+
+                // =================================================
+                // 1. TOMBOL TERASA DIPENCET
+                // =================================================
+
+                openTimeline.to(
+                    "#btnOpenInvitation",
                     {
-                        yPercent: -100,
-                        opacity: 0,
-                        duration: 1.3,
-                        ease: "power2.inOut",
-                        force3D: true
+                        scale: 0.96,
+                        duration: 0.10,
+                        ease: "power2.out"
                     },
                     0
+                );
+
+
+                // =================================================
+                // 2. ISI COVER "TERLEPAS" DULU
+                // bukan seluruh layar langsung bergerak
+                // =================================================
+
+                openTimeline.to(
+                    coverItems,
+                    {
+                        y: -18,
+                        opacity: 0,
+
+                        duration: 0.48,
+
+                        stagger: {
+                            each: 0.035,
+                            from: "end"
+                        },
+
+                        ease: "power2.in"
+                    },
+                    0.08
+                );
+
+
+                // =================================================
+                // 3. FOTO SEDIKIT CINEMATIC ZOOM
+                // =================================================
+
+                openTimeline.to(
+                    "#photoBg",
+                    {
+                        scale: 1.075,
+
+                        duration: 1.45,
+
+                        ease: "sine.inOut"
+                    },
+                    0.05
+                );
+
+
+                // =================================================
+                // 4. INI TRANSISI UTAMANYA
+                //
+                // Cover BUKAN pindah satu layar penuh.
+                // Batas bawah cover naik sampai atas.
+                //
+                // Sedikit yPercent -6 cuma memberikan rasa
+                // "lift", bukan slideshow.
+                // =================================================
+
+                openTimeline.to(
+                    pageWrapper,
+                    {
+                        clipPath: "inset(0% 0% 100% 0%)",
+
+                        yPercent: -6,
+
+                        opacity: 0.25,
+
+                        duration: 1.38,
+
+                        ease: "power4.inOut",
+
+                        force3D: true
+                    },
+                    0.12
+                );
+
+
+                // =================================================
+                // 5. MAIN MENJADI JERNIH
+                // MAIN TIDAK BERGERAK
+                // =================================================
+
+                openTimeline.to(
+                    mainPageStage,
+                    {
+                        opacity: 1,
+
+                        duration: 1.1,
+
+                        ease: "sine.out"
+                    },
+                    0.22
                 );
 
                 });
