@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ============================================================
-    // 3. ENTRANCE COVER — DIRECT COVER ENTRANCE
+    // 3. ENTRANCE COVER — SIMPLE & ELEGANT
     // ============================================================
 
     const coverWrapper =
@@ -149,77 +149,62 @@ document.addEventListener("DOMContentLoaded", function () {
         coverWrapper
     ) {
 
-        // Semua isi cover langsung dalam kondisi final.
-        // Tidak ada animasi tulisan satu-satu.
-        gsap.set(
-            ".cover-text-subtitle, " +
-            ".cover-couple-name, " +
-            ".guest-label, " +
-            ".guest-name, " +
-            ".guest-sub, " +
-            "#btnOpenInvitation",
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1
-            }
-        );
+        // COVER
+        gsap.set(coverWrapper, {
+            opacity: 0
+        });
+
+        // FOTO
+        gsap.set("#photoBg", {
+            scale: 1.06
+        });
+
+        // SEMUA TULISAN + BUTTON JADI SATU
+        gsap.set("#mainContainer", {
+            opacity: 0,
+            y: 18
+        });
 
 
-        // Kondisi awal cover saat link baru dibuka.
-        gsap.set(
-            coverWrapper,
-            {
-                opacity: 0,
-                y: 12,
-                scale: 1.025
-            }
-        );
+        const introTimeline = gsap.timeline();
 
 
-        // Foto sedikit zoom agar lebih cinematic.
-        gsap.set(
-            "#photoBg",
-            {
-                scale: 1.08
-            }
-        );
-
-
-        const introTimeline =
-            gsap.timeline();
-
-
-        // COVER langsung masuk sebagai satu kesatuan.
+        // Cover langsung muncul
         introTimeline.to(
             coverWrapper,
             {
                 opacity: 1,
-                y: 0,
-                scale: 1,
-
-                duration: 1.05,
-
-                ease: "power3.out"
+                duration: 0.8,
+                ease: "sine.out"
             },
             0
         );
 
 
-        // Background bergerak halus bersamaan.
+        // Foto zoom sangat halus
         introTimeline.to(
             "#photoBg",
             {
                 scale: 1,
-
-                duration: 1.55,
-
+                duration: 1.4,
                 ease: "power2.out"
             },
             0
         );
-    }
 
+
+        // Isi cover masuk sebagai SATU KESATUAN
+        introTimeline.to(
+            "#mainContainer",
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.9,
+                ease: "power3.out"
+            },
+            0.15
+        );
+    }
 
     // ============================================================
     // 4. OPEN INVITATION — SLIDE UP SEPERTI VIDEO
