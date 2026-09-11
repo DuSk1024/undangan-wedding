@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ============================================================
-    // 3. ENTRANCE COVER — SIMPLE & ELEGANT
+    // 3. ENTRANCE COVER — OPTIMIZED ANDROID
     // ============================================================
 
     const coverWrapper =
@@ -149,61 +149,108 @@ document.addEventListener("DOMContentLoaded", function () {
         coverWrapper
     ) {
 
-        // COVER
+        // Kondisi awal cover
         gsap.set(coverWrapper, {
             opacity: 0
         });
 
-        // FOTO
-        gsap.set("#photoBg", {
-            scale: 1.06
-        });
-
-        // SEMUA TULISAN + BUTTON JADI SATU
+        // Konten cover
         gsap.set("#mainContainer", {
             opacity: 0,
-            y: 18
+            y: isAndroid ? 10 : 18
         });
 
 
-        const introTimeline = gsap.timeline();
+        const introTimeline =
+            gsap.timeline();
 
 
-        // Cover langsung muncul
-        introTimeline.to(
-            coverWrapper,
-            {
-                opacity: 1,
-                duration: 0.8,
-                ease: "sine.out"
-            },
-            0
-        );
+        // ========================================================
+        // ANDROID — VERSION RINGAN
+        // ========================================================
+
+        if (isAndroid) {
+
+            // Cover fade langsung
+            introTimeline.to(
+                coverWrapper,
+                {
+                    opacity: 1,
+                    duration: 0.55,
+                    ease: "sine.out"
+                },
+                0
+            );
 
 
-        // Foto zoom sangat halus
-        introTimeline.to(
-            "#photoBg",
-            {
-                scale: 1,
-                duration: 1.4,
-                ease: "power2.out"
-            },
-            0
-        );
+            // Tulisan tetap ada animasinya
+            introTimeline.to(
+                "#mainContainer",
+                {
+                    opacity: 1,
+                    y: 0,
+
+                    duration: 0.6,
+
+                    ease: "power2.out"
+                },
+                0.08
+            );
+
+        }
 
 
-        // Isi cover masuk sebagai SATU KESATUAN
-        introTimeline.to(
-            "#mainContainer",
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.9,
-                ease: "power3.out"
-            },
-            0.15
-        );
+        // ========================================================
+        // DESKTOP / DEVICE LEBIH KUAT
+        // ========================================================
+
+        else {
+
+            gsap.set("#photoBg", {
+                scale: 1.06
+            });
+
+
+            // Cover muncul
+            introTimeline.to(
+                coverWrapper,
+                {
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "sine.out"
+                },
+                0
+            );
+
+
+            // Foto zoom lembut
+            introTimeline.to(
+                "#photoBg",
+                {
+                    scale: 1,
+
+                    duration: 1.4,
+
+                    ease: "power2.out"
+                },
+                0
+            );
+
+
+            // Tulisan masuk
+            introTimeline.to(
+                "#mainContainer",
+                {
+                    opacity: 1,
+                    y: 0,
+
+                    duration: 0.9,
+
+                    ease: "power3.out"
+                },
+                0.15
+            );
+        }
     }
 
     // ============================================================
