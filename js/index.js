@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ============================================================
-    // 3. ENTRANCE COVER — COVER + TEXT CINEMATIC
+    // 3. ENTRANCE COVER — DIRECT COVER ENTRANCE
     // ============================================================
 
     const coverWrapper =
@@ -149,74 +149,56 @@ document.addEventListener("DOMContentLoaded", function () {
         coverWrapper
     ) {
 
-        // ========================================================
-        // KONDISI AWAL COVER
-        // ========================================================
-
-        gsap.set(coverWrapper, {
-            opacity: 0,
-            scale: 1.035
-        });
-
-
-        // FOTO
-        gsap.set("#photoBg", {
-            scale: 1.08
-        });
-
-
-        // THE WEDDING OF
-        gsap.set(".cover-text-subtitle", {
-            opacity: 0,
-            y: -15
-        });
-
-
-        // NAMA PASANGAN
-        gsap.set(".cover-couple-name", {
-            opacity: 0,
-            y: 20,
-            scale: 0.92
-        });
-
-
-        // DATA TAMU
+        // Semua isi cover langsung dalam kondisi final.
+        // Tidak ada animasi tulisan satu-satu.
         gsap.set(
-            ".guest-label, .guest-name, .guest-sub",
+            ".cover-text-subtitle, " +
+            ".cover-couple-name, " +
+            ".guest-label, " +
+            ".guest-name, " +
+            ".guest-sub, " +
+            "#btnOpenInvitation",
             {
-                opacity: 0,
-                y: 16
+                opacity: 1,
+                y: 0,
+                scale: 1
             }
         );
 
 
-        // TOMBOL
-        gsap.set("#btnOpenInvitation", {
-            opacity: 0,
-            y: 20,
-            scale: 0.94
-        });
-
-
-        // ========================================================
-        // TIMELINE UTAMA
-        // ========================================================
-
-        const introTimeline = gsap.timeline({
-            defaults: {
-                ease: "power3.out"
+        // Kondisi awal cover saat link baru dibuka.
+        gsap.set(
+            coverWrapper,
+            {
+                opacity: 0,
+                y: 12,
+                scale: 1.025
             }
-        });
+        );
 
 
-        // COVER LANGSUNG MASUK
+        // Foto sedikit zoom agar lebih cinematic.
+        gsap.set(
+            "#photoBg",
+            {
+                scale: 1.08
+            }
+        );
+
+
+        const introTimeline =
+            gsap.timeline();
+
+
+        // COVER langsung masuk sebagai satu kesatuan.
         introTimeline.to(
             coverWrapper,
             {
                 opacity: 1,
+                y: 0,
                 scale: 1,
 
-                duration: 1.15,
+                duration: 1.05,
 
                 ease: "power3.out"
             },
@@ -224,82 +206,17 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        // FOTO bergerak bersamaan
+        // Background bergerak halus bersamaan.
         introTimeline.to(
             "#photoBg",
             {
                 scale: 1,
 
-                duration: 1.6,
+                duration: 1.55,
 
                 ease: "power2.out"
             },
             0
-        );
-
-
-        // THE WEDDING OF
-        // masuk hampir bersamaan dengan cover
-        introTimeline.to(
-            ".cover-text-subtitle",
-            {
-                opacity: 1,
-                y: 0,
-
-                duration: 0.7,
-
-                ease: "power2.out"
-            },
-            0.15
-        );
-
-
-        // STEPHEN & DESSY
-        introTimeline.to(
-            ".cover-couple-name",
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-
-                duration: 0.85,
-
-                ease: "power3.out"
-            },
-            0.25
-        );
-
-
-        // INFORMASI TAMU
-        introTimeline.to(
-            ".guest-label, .guest-name, .guest-sub",
-            {
-                opacity: 1,
-                y: 0,
-
-                duration: 0.65,
-
-                stagger: 0.07,
-
-                ease: "power2.out"
-            },
-            0.4
-        );
-
-
-        // OPEN INVITATION
-        introTimeline.to(
-            "#btnOpenInvitation",
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-
-                duration: 0.7,
-
-                ease: "back.out(1.15)"
-            },
-            0.65
         );
     }
 
