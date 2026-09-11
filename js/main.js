@@ -4389,78 +4389,101 @@ if (
 
 
 // ==========================================
-// 10. FULLSCREEN CANVAS HP
+// 10. RESPONSIVE CANVAS HP + AUTO FIT DESKTOP
 // ==========================================
 
 function makeCanvasFullScreen() {
 
-
     const canvas =
+        document.querySelector(
+            '.main-wrapper .card-canvas'
+        );
 
-        document
-            .querySelector(
-                '.main-wrapper .card-canvas'
-            );
+    if (!canvas) {
+        return;
+    }
 
+    // ==========================================
+    // HP - TETAP FULLSCREEN
+    // ==========================================
 
-    if (
-        !canvas
-    ) {
+    if (window.innerWidth <= 576) {
+
+        canvas.style.transform = 'none';
+        canvas.style.transformOrigin = 'center center';
+
+        canvas.style.width = '100vw';
+        canvas.style.height = `${window.innerHeight}px`;
 
         return;
     }
 
 
-    if (
-        window.innerWidth <=
-        576
-    ) {
+    // ==========================================
+    // LAPTOP / DESKTOP - AUTO FIT
+    // ==========================================
+
+    const originalWidth = 480;
+    const originalHeight = 750;
+
+    // Jarak sedikit dari atas/bawah layar
+    const paddingMargin = 20;
+
+    const availableWidth =
+        window.innerWidth - paddingMargin;
+
+    const availableHeight =
+        window.innerHeight - paddingMargin;
 
 
-        canvas.style.transform =
-            'none';
+    // Hitung skala berdasarkan lebar dan tinggi layar
+    const scaleX =
+        availableWidth / originalWidth;
+
+    const scaleY =
+        availableHeight / originalHeight;
 
 
-        canvas.style.width =
-            '100vw';
+    // Ambil skala terkecil supaya tidak keluar layar
+    // Maksimal 1 supaya tidak membesar melebihi ukuran asli
+    const scale =
+        Math.min(
+            scaleX,
+            scaleY,
+            1
+        );
 
 
-        canvas.style.height =
-            `${window.innerHeight}px`;
-
-    } else {
-
-
-        canvas.style.width =
-            '';
+    // Kembalikan ukuran asli canvas
+    canvas.style.width = '';
+    canvas.style.height = '';
 
 
-        canvas.style.height =
-            '';
-    }
+    // Scale dari tengah
+    canvas.style.transformOrigin =
+        'center center';
+
+    canvas.style.transform =
+        `scale(${scale})`;
 }
 
 
-window
-    .addEventListener(
-
-        'resize',
-
-        makeCanvasFullScreen
-    );
+// Jalankan ketika ukuran browser berubah
+window.addEventListener(
+    'resize',
+    makeCanvasFullScreen
+);
 
 
-document
-    .addEventListener(
-
-        'DOMContentLoaded',
-
-        makeCanvasFullScreen
-    );
+// Jalankan saat halaman selesai dimuat
+document.addEventListener(
+    'DOMContentLoaded',
+    makeCanvasFullScreen
+);
 
 
+// Jalankan langsung
 makeCanvasFullScreen();
-
 
 // ==========================================
 // 11. SLIDESHOW THANK YOU
