@@ -294,7 +294,8 @@ html, body {
 
     z-index: 10000 !important;
 
-    opacity: 1;
+    /* Jangan tampil dulu sebelum GSAP menjalankan entrance */
+    opacity: 0;
 
     transform: translate3d(0, 0, 0);
 

@@ -138,116 +138,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ============================================================
-    // 3. ENTRANCE COVER — CINEMATIC STAGGER
+    // 3. ENTRANCE COVER — DIRECT COVER ENTRANCE
     // ============================================================
 
-    if (typeof gsap !== 'undefined') {
+    const coverWrapper =
+        document.getElementById('pageWrapper');
 
-        // Kondisi awal FOTO
-        gsap.set("#photoBg", {
-            scale: 1.08
-        });
+    if (
+        typeof gsap !== 'undefined' &&
+        coverWrapper
+    ) {
 
-        // THE WEDDING OF
-        gsap.set(".cover-text-subtitle", {
-            opacity: 0,
-            y: -12
-        });
-
-        // STEPHEN & DESSY
-        gsap.set(".cover-couple-name", {
-            opacity: 0,
-            y: 18,
-            scale: 0.92
-        });
-
-        // INFORMASI TAMU
+        // Semua isi cover langsung dalam kondisi final.
+        // Tidak ada animasi tulisan satu-satu.
         gsap.set(
-            ".guest-label, .guest-name, .guest-sub",
+            ".cover-text-subtitle, " +
+            ".cover-couple-name, " +
+            ".guest-label, " +
+            ".guest-name, " +
+            ".guest-sub, " +
+            "#btnOpenInvitation",
             {
-                opacity: 0,
-                y: 14
+                opacity: 1,
+                y: 0,
+                scale: 1
             }
         );
 
-        // TOMBOL
-        gsap.set("#btnOpenInvitation", {
-            opacity: 0,
-            y: 18,
-            scale: 0.94
-        });
 
-
-        const introTimeline = gsap.timeline({
-            defaults: {
-                ease: "power2.out"
+        // Kondisi awal cover saat link baru dibuka.
+        gsap.set(
+            coverWrapper,
+            {
+                opacity: 0,
+                y: 12,
+                scale: 1.025
             }
-        });
+        );
 
 
-        // 1. Background pelan-pelan zoom out
-        introTimeline.to(
+        // Foto sedikit zoom agar lebih cinematic.
+        gsap.set(
             "#photoBg",
             {
+                scale: 1.08
+            }
+        );
+
+
+        const introTimeline =
+            gsap.timeline();
+
+
+        // COVER langsung masuk sebagai satu kesatuan.
+        introTimeline.to(
+            coverWrapper,
+            {
+                opacity: 1,
+                y: 0,
                 scale: 1,
-                duration: 1.5,
-                ease: "power2.out"
+
+                duration: 1.05,
+
+                ease: "power3.out"
             },
             0
         );
 
 
-        // 2. "The Wedding Of" turun sedikit
+        // Background bergerak halus bersamaan.
         introTimeline.to(
-            ".cover-text-subtitle",
+            "#photoBg",
             {
-                opacity: 1,
-                y: 0,
-                duration: 0.7
-            },
-            0.25
-        );
-
-
-        // 3. Nama pasangan muncul lebih mewah
-        introTimeline.to(
-            ".cover-couple-name",
-            {
-                opacity: 1,
-                y: 0,
                 scale: 1,
-                duration: 0.95,
-                ease: "power3.out"
-            },
-            0.45
-        );
 
+                duration: 1.55,
 
-        // 4. Guest info muncul satu-satu
-        introTimeline.to(
-            ".guest-label, .guest-name, .guest-sub",
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.65,
-                stagger: 0.10,
                 ease: "power2.out"
             },
-            0.85
-        );
-
-
-        // 5. Open Invitation terakhir
-        introTimeline.to(
-            "#btnOpenInvitation",
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 0.75,
-                ease: "back.out(1.3)"
-            },
-            1.15
+            0
         );
     }
 
